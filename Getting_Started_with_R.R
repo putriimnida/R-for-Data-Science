@@ -9,7 +9,6 @@
 
 ###########################################################
 ## Task One: R Overview & Preliminaries
-## In this task, you will learn about the R programming
 ## language and write basic R commands.
 ###########################################################
 
@@ -18,37 +17,48 @@
 ### 1.1: Assignments in R
 
 ## Assign x to 1, y to 2 and z to 3
+x = 1
+
+y <- 2
+
+3 -> z
 
 
 ### 1.2: Functions
 
 ## Print Hello World
-
+print("Hello World")
 
 ### 1.3: Computations
 
 ## Add 17 to 5
-
+17 + 5
 
 ## Add 5 to x
-
+5 + x
 
 ## Add 15 to 5 and store it in a variable called y
+y <- 15 + 5
 
+y - 10
+
+y/2
+
+y ** 2
 
 ## Find the square root of 16 and store it in a variable called y
 y <- sqrt(16)      #Square root function
 
 ## Find the square root of 16
-
+sqrt(16)
 
 ## Calling variable in R
 
 # Call y, see y value in console
-
+y
 
 # Call x, see x value in console
-
+x
 
 
 ###########################################################
