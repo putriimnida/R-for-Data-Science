@@ -70,34 +70,37 @@ x
 ### 2.1: Variable Assignment
 
 ## Set the variable x to 6 (Numeric Type)
-
+x <- 6
 
 ## Set the variable y to "Hello" (Character Type)
-
+w <- "Hello"
 
 ## Note: R is case sensitive: The variables 'z' and 'Z' can coexist
 ## in R environment and have different values.
 
 # Store z to the character 'World'
-
+z <- "world"
 
 # Store the value in a variable Z
-
+Z <- 8
 
 ### 2.2: Call Variables
 
 # Call small z
-
+print(z)
 
 # Call capital Z
-
+Z
 
 ### 2.3: Adding Object Together
+a <- x + Z
 
-
+b <- x + y
+b
 
 ## 2.4: What do you think will be the result of this?
-
+c <- w + z
+c
 
 
 ### Data Types
@@ -105,10 +108,10 @@ x
 ### Numeric
 
 ## 2.5: Check the data type of the variable a
-
+class(a)
 
 ## 2.6: Set a variable num to 8.5
-
+num <- 8.5
 
 print(num)   ## Call the variable num
 
@@ -117,7 +120,7 @@ class(num)    ## This is used to check the data type of a variable
 ### Integers
 
 ## 2.7: Change numeric data type to integer
-
+int <- as.integer(num)
 
 class(int)  ## Check the data type of the variable int
 
@@ -126,31 +129,33 @@ class(int)  ## Check the data type of the variable int
 class(w)   # Check the data type of the variable w
 
 ## 2.8: Create a character variable from a numeric variable
-
+char <- "12345"
 
 ## Call the char variable
-
+char
 class(char)
 
 ### Boolean/Logical
 
 ## 2.9: Create a logical variable and set it as TRUE
+log <- TRUE
 
-
-              ## Check the data type of log variable
+class(log)              ## Check the data type of log variable
 
 ### Factors
 
 ## 2.10: Store movie ratings in a variable called fac
-
+fac <- factor(c("3star", "2star", "3star", "4star", "5star", "4star"))
 
 class(fac)   ## Check the data type
 
 ## 2.11: Check how many levels and the data type of the levels
-
+levels(fac)
+nlevels(fac)
+class(levels(fac))
 
 ## 2.12: Check all variables and objects that have been defined
-
+ls()
 
 
 ###########################################################
@@ -163,40 +168,40 @@ class(fac)   ## Check the data type
 
 ## 3.1: Create a vector of the marks of 4 students
 ## use c() to store several values in one variable
-
+marks <- c(14, 26, 28, 30)
 
 ## 3.2: Check the data type of the vector
-
+class(marks)
 
 ## 3.3: Check the length of the variable
-
+length(marks)
 
 ## 3.4: Indexing and Slicing
-               ## Returns the 4th mark
+marks[4]              ## Returns the 4th mark
 
-               ## Returns the 2nd, 3rd and 4th marks
+marks[2:4]              ## Returns the 2nd, 3rd and 4th marks
 
 ## (Ex.) What do you think the result will be?
-
+marks[-1] 
 
 ## 3.5: Create a character vector
-
-
+char_vec <- c("a", "b", "c", "d")
 
 ## 3.6 (Ex.): Check the data type and length of the vector
-
+class(char_vec)
+length(char_vec)
 
 ## 3.7 (Ex.): Retrieve the 1st, 2nd and 3rd characters in the char_vec vector
-
+char_vec[1:3]
 
 ## 3.8: Create the variable char_num_vec to take numeric and character types
-
+char_num_vec <- c(10, 20, 30, "a")
 
 ## 3.9 (Ex.) : What do you think will be the data type of the vector?
-
+class(char_num_vec)
 
 ## 3.10: Create a vector of odd numbers
-
+seq(1, 14, by=2)
 
 
 ###########################################################
@@ -209,38 +214,39 @@ class(fac)   ## Check the data type
 ### MATRICES
 
 # 4.1: Create matrix with values from marks, 2 rows and 2 columns
-
+matrix1 <- matrix(marks, nrow = 2, ncol = 2)
 
 # Call the matrix created
-
+matrix1
 
 ## 4.2: Change byrow to TRUE
-
+matrix2 <- matrix(marks, nrow = 2, ncol = 2, byrow = TRUE)
 
 # Call the matrix created
-
+matrix2
 
 # 4.3: Create vector with 9 integers from 1 to 9
+int <- 1:9
+int
 
-
-
-
+matrix3 <- matrix(int, nrow = 3, ncol = 3)
+matrix3
 # 4.4: Access value on second row, second column
-
+matrix3[2,2]
 
 # 4.5: Access second row
-
+matrix3[2,]
 
 # 4.6: Access second column
-
+matrix3[,2]
 
 # 4.7: Access sub-matrix with components on both 
 # first 2 rows and first 2 columns
-
+matrix3[1:2,1:2]
 
 # 4.8: Access sub-matrix with components that are 
 # not on 3rd row and 3rd column
-
+matrix3[-3,-3]
 
 
 ###########################################################
@@ -252,24 +258,26 @@ class(fac)   ## Check the data type
 ### DATA FRAMES
 
 ## 5.1: Create data frame with 2 columns: marks and char_vec
-
+df <- data.frame(char_vec, marks)
+df
 
 class(df)     ## Look at data frame's overall type
 
 ## 5.2: Check the structure of each variable/feature in the data frame
-
+str(df)
 
 # 5.3: Look at columns' data types
-
+class(df$marks)
 
 # 5.4: Call a column in a data frame
-
+df$marks
 
 # OR
-
+df[,1]
 
 # 5.5: Create sub data frame with first 3 rows only
-
+df1 <- df[1:3,1]
+df1
 
 ## 5.6: Create a new data frame with 3 rows and explore it
 
@@ -281,9 +289,10 @@ data <- data.frame(
 )
 
 ## Call the data frame 
-print(data) 
+print(data)
 
 class(data)  ## Check the data type 
+
 
 nrow(data)  # This returns the number of rows in the data frame
 ncol(data)  # This returns the number of columns in the data frame
@@ -300,18 +309,19 @@ data1 <- data.frame(
 ## 5.8: Use rbind and cbind to append new data to an existing dataset
 
 ## rbind - A row bind appends new values in row fashion
-
+df2 <- rbind(data, data1)
+df2
 
 ## Create two new columns; Gender and LastName
 Gender = c("M", "F", "F", "M", "M")
 LastName = c("Arimoro", "Isijola", "James", "Akinbote", "Khalid")
 
 ## cbind - A column bind appends new values in column fashion
-
-
+df3 <- cbind(df2, Gender, LastName)
+df3
 
 ## Check the dataframe and its structure
-
+str(df3)
 
 
 ###########################################################
@@ -323,20 +333,23 @@ LastName = c("Arimoro", "Isijola", "James", "Akinbote", "Khalid")
 ### LISTS
 
 # 6.1: Create a list with 4 objects
-
+list <- list(char_vec, marks, matrix1, df)
+list
 
 # 6.2: Accessing each object in the list
 
 # Access the first and second objects
 
+list[[1]]
 
-
+list[[2]]
 # (Ex.): Access the third and fourth objects
+list[[3]]
 
-
+list[[4]]
 
 # 6.3: Call First row of 3rd list's objects.
-
+list[[3]][1,]
 
 
 ###########################################################
@@ -350,10 +363,10 @@ LastName = c("Arimoro", "Isijola", "James", "Akinbote", "Khalid")
 ### Importing Packages
 
 # 7.1: Install package on computer (from CRAN repository)
-
+install.packages("readr")
 
 # load package in R session
-
+library(readr)
 
 # 7.2: Install readxl package to machine
 ## install.packages("readxl")
@@ -364,11 +377,10 @@ library(readxl)
 ### WORKING DIRECTORY
 
 # 7.3: Set working directory (tells R where to import files from/export files to)
-
+setwd("")
 
 # Get working directory
-
-
+getwd()
 
 ###########################################################
 ## Task Eight: Importing Datasets into R
@@ -379,29 +391,29 @@ library(readxl)
 ### 8.1: Import .Txt with space separated values and explore it
 
 # read.table() function to import .txt files
-
-
+txtdata <- read.table("dataset.txt", header = TRUE)
+class(txtdata)
 
 ## See all data
-
+view(txtdata)
 
 ## See first 5 rows
-
+head(txtdata, 5)
 
 ## See last rows
-
+tail(txtdata, 2)
 
 ## Check the structure of the data 
-
+str(txtdata)
 
 ## Check the summary of the data
-
+summary(txtdata)
 
 ## Change column's type to character
 ## Sales column is overwritten by 
 ## "character" version of Sales column
 
-
+txtdata$Sales <- as.character(txtdata$Sales)
 ## Change column's type to factor
 
 
@@ -409,17 +421,18 @@ library(readxl)
 
 # read.table() function to import .txt files
 # I will add a sep= "," for comma separated files
+orange <- read.table("Orange_comma_separated.txt", header = TRUE, sep =",")
 
-
+View(orange)
 
 ## Check the summary of the data
-
+summary(orange)
 
 ## Check the structure of the data
-
+str(orange)
 
 ## (Ex.): Change the Tree feature to factor
-
+orange$Tree <- as.factor(orange$Tree)
 
 
 ### 8.3: Import .csv file
@@ -428,11 +441,11 @@ library(readxl)
 library(readr)
 
 #  Use read.csv() to import .csv files and explore it
-
+diabetes <- read.csv("diabetes.csv")
 
 
 ## (Ex.) Check the data type
-
+class(diabetes)
 
 ## (Ex.) Retrieve the first 5 rows
 
@@ -447,14 +460,14 @@ library(readr)
 
 
 ### 8.4: Import excel document
-
+library(readxl)
 ## Use read_excel() to import xlsx documents
-
+exdata <- read_excel("dataset.xlsx")
 
 ## Note: We can also use Rstudio interface
 
 ## Check the data type
-
+class(exdata)
 
 # Make the data a proper data frame object
 
