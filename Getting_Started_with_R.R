@@ -471,3 +471,38 @@ class(exdata)
 
 # Make the data a proper data frame object
 
+
+
+
+##---------------------##
+## Exercise: Create objects and check their modes
+Create the following objects in R, then use the `mode()` function to verify
+their modes. Try to guess what the mode will be before you look at the solution
+1. `chromosome_name <- 'chr02'`
+2. `od_600_value <- 0.47`
+3. `chr_position <- '1001701'`
+4. `spock <- TRUE`
+5. `pilot <- Earhart`
+
+## Solution
+```{r, echo=FALSE, purl=FALSE}
+chromosome_name <- 'chr02'
+od_600_value <- 0.47
+chr_position <- '1001701'
+spock <- TRUE
+
+```
+
+
+```{r, purl=FALSE}
+mode(chromosome_name)
+mode(od_600_value)
+mode(chr_position)
+mode(spock)
+```
+
+```{r, purl=FALSE}
+mode(pilot)
+```
+## ---------------- ##
+
