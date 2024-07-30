@@ -506,3 +506,18 @@ mode(pilot)
 ```
 ## ---------------- ##
 
+
+
+## ------- notes --------- ##
+# Create a list with 4 objects
+list <- list(char_vec, marks, matrix1, df)
+list
+# Access the first and second objects
+list[[1]]
+list[[2]]
+# (Ex.): Access the third and fourth objects
+list[[3]]
+list[[4]]
+# Call First row of 3rd list's objects.
+list[[3]][1,]
+## ---------------- ##
