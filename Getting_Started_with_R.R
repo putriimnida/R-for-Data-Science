@@ -521,3 +521,19 @@ list[[4]]
 # Call First row of 3rd list's objects.
 list[[3]][1,]
 ## ---------------- ##
+
+# Import .Txt with space separated values and explore it
+# read.table() function to import .txt files
+txtdata <- read.table("dataset.txt", header = TRUE)
+class(txtdata)
+## See all data
+view(txtdata)
+## See first 5 rows
+head(txtdata, 5)
+## See last rows
+tail(txtdata, 2)
+## Check the structure of the data 
+str(txtdata)
+## Check the summary of the data
+summary(txtdata)
+## ---------------- ##
