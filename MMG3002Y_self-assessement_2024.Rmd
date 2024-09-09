@@ -14,17 +14,20 @@ This self assessment is intended to help you determine if you should do some sum
 
 ##1 Variables - Write a line of code to assign the value 3 to the variable "my_lucky_number"
 ```{r}
+my_lucky_number <- 3
 
 ```
 
 ##2 Vectors - A vector is a sequence of data of the same type. Write a line of code to create a vector containing the numbers 10, 20, 30, 40, 50. Name this vector "my_vector". Note, a vector can be created in R using the c() function
 ```{r}
+my_vector <- c(10, 20, 30, 40, 50)
 
 ```
 
 
 ##3 Indexing - Indexing is used for accessing subsets of vectors. Write a line of code to access the 3rd element in my_vector.
 ```{r}
+my_vector <- [3]
 
 ```
 
