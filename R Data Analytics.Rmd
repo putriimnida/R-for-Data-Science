@@ -4,7 +4,7 @@ output: html_document
 date: "2024-10-24"
 ---
 
-
+Materials and Practice
 Project: Install RStudio
 6 of 11 · Installing Tidyverse Packages Collection
 
@@ -88,3 +88,247 @@ When writing a script, it's good practice to begin at the top by writing code to
 ```{r}
 library(readr)
 library(ggplot2)
+```
+
+
+Vectors in R
+1 of 11 · Introduction to Data Structures: Generating Vectors
+
+Learn
+Understanding data structures is fundamental in R programming. They are the tools that help us store and work with data efficiently.
+
+In this course we will learn the following data structures:
+
+Vector: A one-dimensional container for storing values of SAME TYPE.
+Matrix: A two-dimensional structure for storing values of SAME TYPE.
+Lists: A versatile multi-dimensional stucture for storing values of ANY DATA TYPE/OBJECT.
+Dataframe: Another two-dimensional structure for storing values of ANY DATA TYPE/OBJECT.
+Here's a visual representation to help you picture these structures:
+
+
+Learning about data structures involves:
+- Creating them.
+- Accessing their elements (indexing).
+- Adding or removing elements.
+- Using them in various operations and tasks.
+In this lesson, we will focus on vectors. We'll build on the skills we learned in the previous course as we dive deeper into creating, manipulating, and performing calculations with vectors.
+
+So, what is a vector? It is a data structure that holds a collection of values of the same type, allowing us to perform operations on them collectively. Think of it like an array in other languages like Python.
+
+In the previous course, we encountered basic data types like logical, numeric (integer and double), and character. In this lesson, we will create vectors for each of these types:
+- Logical vector.
+- Integer vector.
+- Double vector.
+- Character vector.
+
+Creating vectors is straightforward. We can generate a sequence of values in different ways:
+
+A range of values like 1, 2, 3, and 4, can be generated as a vector using a colon (:) in R.
+
+```{r}
+a_range_vector <- 1:4
+```
+A sequence of values based on specific rules, such as 2, 5, and 8, can be generated using the seq() function:
+
+```{r}
+seq_2_10 <- seq(from = 2, to = 10, by = 3)
+print(seq_2_10)
+```
+We can also repeat a value a specified number of times (times) with the rep() function:
+
+```{r}
+rep_4 <- rep(5, times = 4)
+print(rep_4)
+```
+
+Plus, the rep() function can even repeat an entire vector:
+```{r}
+rep_6 <- rep(1:3, times = 2)
+print(rep_6)
+```
+
+
+```{r}
+vector_1 <- rep(4, times = 10)
+vector_2 <- 1:12
+vector_3 <- seq(from = 2.0, to = 5.50, by = 0.25)
+```
+2 of 11 · Creating a Vector Using Known Values
+Learn
+On this screen, we learn how to create a vector using known values.
+
+A vector is created using the function c()(which stands for concatenate). This function receives a sequence of values of the SAME TYPE separated by commas (,) and it will transform them into a vector. Here are some practical examples:
+
+A logical vector for making validation decisions in classes:
+```{r}
+c(TRUE, FALSE, FALSE)
+c(TRUE, FALSE, TRUE, FALSE)
+```
+
+An integer vector that contains the scores of a game:
+```{r}
+c(12L, 3L, 24L, 8L)
+c(21L, 13L)
+```
+
+A double vector that contains the selling prices of products:
+```{r}
+c(12.10, 24.90, 4.99)
+c(21.10, 25.50, 35.50)
+```
+
+A character vector that contains names of the days of the week:
+```{r}
+c("Monday", "Tuesday", "Wednesday","Thursday", "Friday", "Saturday","Sunday")
+c("Haruto", "Junkyu", "Asahi", "Doyoung", "Yoshi", "Jihoon")
+```
+
+Remember that R follows specific syntax rules in order for the computer to perform our instructions. If we try to store a sequence of values without the c() function:
+```{r}
+# selling_prices <- 12.10, 24.90, 4.99
+```
+We will recieve the following error message
+
+Practice:
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+```
+
+
+3 of 11 · Indexing Vectors by Position
+Learn
+On this screen, we'll investigate how a vector is structured and how we can index (i.e. access) an element in a vector.
+
+Recall the vectors we created on the previous exercise:
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+```
+
+When you store these vectors in R, each value within them is assigned a position number (called an index) in memory. These positions allow us to access individual values within the vector. R follows a 1-indexed system, meaning the first element in a vector has a position of one.
+
+To extract values from the vector, we specify their position within square brackets ([]). For example, to retrieve the value in the third position of math_grades, we can write:
+```{r}
+math_grades[3]
+```
+which returns:
+```{r}
+# output: [1] 85
+```
+We can also extract multiple values of a vector by specifying a range of positions using a colon (:). To select the first through fourth elements of the exam_grades vector, we would write:
+```{r}
+exam_grades[1:4]
+# output: [1] 92 90 84 95
+```
+What if we want to select vector elements that are not next to each other? To do so, we can create a new vector of the desired indices and use this new vector of indices to extract the desired values from the original vector. To select elements in the first, third, and seventh positions of the exam_grades vector, we would write:
+```{r}
+exam_grades[c(1, 3, 7)]
+# output: [1] 92 84 85
+```
+
+Practice:
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+# Add your code below
+math_exam_grade <- math_grades[1]
+desired_exam_grades <- exam_grades[c(2, 3, 6)]
+non_stem_exam_grades <- exam_grades[3:7]
+```
+
+4 of 11 · Indexing Vectors using Logicals
+Learn
+On the previous screen, we learned how to index element in a vector based on the vector structure.
+
+Here are the vectors we created in the previous exercise.
+```{r}
+math_exam_grade <- math_grades[1] # extracting a single element
+non_stem_exam_grades <- exam_grades[c(3:7)] # extracting a range of elements
+desired_exam_grades <- exam_grades[c(2, 3, 6)]  # extracting a list of desired elements
+```
+
+Let's extract the grades of STEM classes from the exam_grades vector. To guide us, the is_stem_classes vector contains the following values:
+```{r}
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+```
+
+Based on what we have learned so far, we can create a vector of indices where is_stem_classes is TRUE and use it to extract the desired values.
+```{r}
+exam_grades[c(1, 2)]
+# output: [1] 92 90
+```
+
+However, this approach is not scalable, especially with larger vectors where identifying every TRUE value would be cumbersome. Luckily, R offers a more elegant solution: logical indexing. Thus, to extract the grades of STEM classes using the is_stem_classes vector, we can do:
+```{r}
+exam_grades[is_stem_classes]
+# output: [1] 92 90
+```
+
+Practice:
+```{r}
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+# Add your code below
+homework_grades <- c(87, 81, 95, 86, 85, 90, 88)
+preferred_homework_grades <- homework_grades[is_stem_classes]
+```
+
+Vectors in R
+5 of 11 · Modifying Elements in a Vector
+Learn
+On the two previous screens, we learned how to extract elements from a vector using various methods.
+
+- To extract a single element: math_grades[1].
+- For a range of elements: exam_grades[c(3:7)].
+- To select specific elements using an integer vector of indices: exam_grades[c(2, 3, 6)].
+- For filtering elements based on a logical vector: exam_grades[is_stem_classes].
+
+On this screen, we'll learn how to modify the elements of a vector. Luckily, we can achieve this by using two notions that we have already learned: assignment with <- and indexing.
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+```
+
+To replace the third grade in math_grades by 90L, we can write:
+```{r}
+math_grades[3] <- 90L #modify the third element of the vector
+print(math_grades) 
+# output: [1] 92 87 90
+```
+
+We can see that the third value has changed. Here's how R handles it:
+
+First, it identifies the element we would like to modify using its index.
+Then, it updates that specific element with the new value.
+We can therefore make similar modifications using the other indexing methods.
+
+Using a vector of indices:
+```{r}
+exam_grades[c(3:7)] <- 85
+print(exam_grades)
+# output: [1] 92 90 85 85 85 85 85
+```
+
+Using logicals
+```{r}
+exam_grades[is_stem_class] <- 95 
+print(exam_grades) 
+# output: [1] 95 95 84 95 77 92 85
+```
+
+Practice:
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+
+math_grades[2] <- 80L
+exam_grades[is_stem_classes] <- 92
+```
+
+6 of 11 · Appending Elements to a Vector
+Learn
+It turns out that there are three additional class grades that we didn't initially consider in our dataset.
+```{r}
