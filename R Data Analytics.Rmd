@@ -1,0 +1,90 @@
+---
+title: "R Data Analytics"
+output: html_document
+date: "2024-10-24"
+---
+
+
+Project: Install RStudio
+6 of 11 · Installing Tidyverse Packages Collection
+
+Tidyverse is a collection of packages needed for data analysis.
+These are the most common packages:
+```{r}
+readr #for data import.
+ggplot2 #for data visualization.
+dplyr #for data manipulation.
+tidyr #for data cleaning.
+purrr #for functional programming.
+tibble #for tibbles, a modern re-imagining of dataframes.
+stringr #for strings.
+
+# install tidyverse
+install.packages("tidyverse")
+
+library(readr)
+library(ggplot2)
+
+# it's also possible to load them all using:
+library(tidyverse)
+
+```
+
+7 of 11 · Importing Data
+Learn
+When we write code to import a dataset into RStudio, we must make sure that we have the working directory set to the location where our data files are stored. Otherwise, we'll have to specify the file location.
+
+There are a few ways to set the working directory in RStudio.
+
+Use the setwd() function. We can use this function to set our working directory to the Desktop folder by typing: setwd("~/Desktop") in the Console.
+
+Navigate to and choose the working directory from the Session menu.
+
+To print our working directory in the Console, type getwd().
+
+In other lessons, we learned we'll often want to import data into R. We learned to use the read_csv() function in the readr package to import data and assign the dataframe to a variable. Datasets we import into R as dataframes display in the Environment tab as well. To demonstrate this, you can download a dataset. We will use it in the following screens.
+
+Make sure to download this dataset and store it in your working directory.
+
+As an alternative to typing code in the Console, we can import datasets into RStudio using the Import Dataset feature in the Environment tab.
+
+We recommend using the readr option, which uses functions, like read_csv(), that we learned about earlier in this course.
+
+If we import data into R using the Import Dataset feature, the data automatically displays in a tab located on the top-left of the interface.
+
+If we import our data into R by typing functions like read_csv() in the Console, R does not automatically open the data file. To display our data, we use the function View(). For example, to look at the dataframe we created in a previous lesson when we imported data on Monster Jobs into R, we would type the following code into the Console:
+```{r}
+View(monster_jobs)
+```
+
+8 of 11 · Writing Scripts
+In RStudio, we can write scripts in the text editor window at the top left of the interface. To create a new script, use the create new script drop down menu at the top right of the interface or commands in the file menu. You can also use the keyboard shortcut Ctrl + Shift + N for windows and Command + Shift + N for macOS.
+```{r}
+# loading packages
+library(readr)
+library(ggplot2)
+
+# loading the monster_jobs dataset
+monster_jobs_clean <- read_csv("monster_jobs_clean.csv")
+view(monster_jobs_clean)
+
+# plotting job_id vs salary_min
+ggplot(data = monster_jobs_clean, aes(x = job_id, y = salary_min, color = job_type)) + geom_point() + labs(tittle = "Job ID vs Minimum Salary", x = "Job ID", y = "Minimum Salary", color = "Job Type")
+```
+To run a line of code we typed into our console's script, we place the cursor on the line and then, we can either click run at the top right of the script or use the following keyboard commands:
+
+OS X: Cmd + Enter
+Windows and Linux: Ctrl + Enter
+
+We can also highlight multi-line chunks of our code that we want to run.
+
+Sometimes, we'll write a script we want to run all at once. To highlight all the code in our script, we can use the command:
+
+OS X: Cmd + a
+Windows and Linux: Ctrl + a
+
+When writing a script, it's good practice to begin at the top by writing code to load the packages we'll need to run the script:
+
+```{r}
+library(readr)
+library(ggplot2)
