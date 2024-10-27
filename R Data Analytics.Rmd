@@ -331,4 +331,40 @@ exam_grades[is_stem_classes] <- 92
 6 of 11 · Appending Elements to a Vector
 Learn
 It turns out that there are three additional class grades that we didn't initially consider in our dataset.
+
+The exam_grades vector contains the following values.
 ```{r}
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+```
+
+The three additional exams' grades are stored in the vector extra_exam_grades.
+```{r}
+extra_exam_grades <- c(75, 85, 95)
+```
+
+To add these three values to the existing vector we can manually add these three elements.
+```{r}
+new_exam_grades <- c(92, 90, 84, 95, 77, 92, 85, 75, 85, 95)
+```
+
+However, this approach can become quite cumbersome, especially with larger vectors. Fortunately, R provides an efficient solution using the c() function:
+```{r}
+new_exam_grades <- c(exam_grades, extra_exam_grades)
+print(new_exam_grades)
+# output: [1] 92 90 84 95 77 92 85 75 85 95
+```
+
+This code creates a new vector, new_exam_grades, by appending the elements in extra_exam_grades to the vector exam_grades.
+
+We can also reverse this process by appending the elements in exam_grades to the vector extra_exam_grades by swapping their positions like this:
+```{r}
+new_exam_grades <- c(extra_exam_grades,exam_grades)
+print(new_exam_grades) 
+# output: [1] 75 85 95 92 90 84 95 77 92 85
+```
+
+practice:
+```{r}
+extra_is_stem_classes <- c(TRUE, FALSE, FALSE)
+new_is_stem_classes_end <- c(is_stem_classes, extra_is_stem_classes)
+new_is_stem_classes_start <- c(extra_is_stem_classes, is_stem_classes)
