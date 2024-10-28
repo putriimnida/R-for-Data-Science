@@ -826,3 +826,344 @@ practice:
 cell_columbia_influence <- university_matrix["columbia", "influence"]
 vector_cambridge <- university_matrix["cambridge", ]
 vector_world_rank <- university_matrix[ ,"world_rank"]
+```
+
+
+
+5 of 11 · Indexing Matrices using Vectors
+Learn
+recap
+
+The syntax for indexing a matrix is matrix[row, column]. In the square brackets ([]), we indicate the row index first, then the column index and both are separated by a comma (,).
+We can index (i.e., access) a specific value by indicating its row and its column: matrix[row, column].
+We can index (i.e., access) a specific row by indicating the row index/name, leaving the column's place empty in the square bracket: matrix[row, ].
+We can index (i.e., access) a specific column by indicating the column index/name, leaving the row's place empty in the square bracket: matrix[ , column].
+Meanwhile, in the previous lesson, we learned that a vector can also be indexed by another vector. The indexing vector can be:
+- a range of integer values,
+- an integer vector of indices,
+- a logical vector, or
+- a character vector of names.
+We can also index matrices the same way.
+
+```{r}
+# _         world_rank quality_of_education influence broad_impact patents
+# harvard            1                    1         1            1       3
+# stanford           2                    9         3            4      10
+# MIT                3                    3         2            2       1
+# cambridge          4                    2         6           13      48
+# oxford             5                    7        12            9      15
+# columbia           6                   13        13           12       4
+```
+
+To return the values in the first three rows (harvard, stanford, and MIT) and the second column (quality_of_education) of university_matrix, we can write:
+```{r}
+university_matrix_[1:3, 2]
+# output:
+# harvard stanford  MIT 
+#      1        9    3
+```
+
+We can also use the rows and columns names:
+```{r}
+university_matrix[c("harvard", "stanford", "MIT"), "quality_of_education"]
+# output: 
+# harvard stanford  MIT 
+#      1        9    3
+```
+
+To return the rankings for the USA's universities (i.e., Harvard, Stanford, MIT, and Columbia):
+```{r}
+usa_universities <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE) # e.g. the first TRUE means Harvard is an American university.
+university_matrix[usa_universities, ] # notice the absence of the column index
+# output:
+# _        world_rank quality_of_education influence broad_impact patents
+# harvard           1                    1         1            1       3
+# stanford          2                    9         3            4      10
+# MIT               3                    3         2            2       1
+# columbia          6                   13        13           12       4
+```
+
+To return the rankings for the USA's universities (i.e., Harvard, Stanford, MIT, and Columbia) in the influence, broad impact, and patents categories:
+```{r}
+usa_universities <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
+university_matrix[usa_universities, c(3, 4, 5)] #instead of c(3, 4, 5) we can use 3:5 or the names of the columns
+# output:
+# _        influence broad_impact patents
+# harvard          1            1       3
+# stanford         3            4      10
+# MIT              2            2       1
+# columbia        13           12       4
+```
+
+practice:
+```{r}
+usa_universities <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
+# add code
+sub_matrix <- university_matrix[c("harvard", "MIT", "cambridge"), c("world_rank", "broad_impact")]
+usa_universities_rankings <- university_matrix[usa_universities, c("world_rank", "patents")]
+```
+
+
+6 of 11 · Modifying Elements in a Matrix
+Learn
+In this screen, we learn how to modify the elements of a matrix. Luckily, we can achieve this by applying two concepts that we have already learned: assignment using <- and indexing.
+
+matrix sample:
+```{r}
+# _         world_rank quality_of_education influence broad_impact patents
+# harvard            1                    1         1            1       3
+# stanford           2                    9         3            4      10
+# MIT                3                    3         2            2       1
+# cambridge          4                    2         6           13      48
+# oxford             5                    7        12            9      15
+# columbia           6                   13        13           12       4
+```
+
+To replace the value in the third row (MIT) and second column (quality_of_education) of university_matrix by 2, we can write:
+```{r}
+university_matrix[3, 2] <- 2 
+# modify the element at the third row and second column
+```
+
+We can see that the element in the third row and the second column has changed. Actually, R first located the element that we would like to modify (by indexing) and then modified its content by assigning the new value to it.
+
+We can, therefore, make similar modifications using the other indexing methods.
+```{r}
+university_matrix[usa_universities, 3:5] <- 1
+```
+
+practice:
+```{r}
+university_matrix <- cbind(world_rank, quality_of_education, influence, broad_impact, patents)
+rownames(university_matrix) <- c("harvard", "stanford", "MIT", "cambridge", "oxford", "columbia")
+
+usa_universities <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE)
+
+# add code
+university_matrix[4, 5] <- 3
+university_matrix[c(1, 2, 3, 6), ] <- 2
+```
+
+
+7 of 11 · Appending Elements To a Matrix
+Learn
+Let's return to our initial goal: Deciding which university to attend. As we look at our data, we notice that while we have information to help us assess the quality of education and impact of the six universities, we also would like to have information on the cost of tuition for each university.
+
+To address this, we've done some research and gathered data on annual tuition, in U.S. dollars, for each university:
+Harvard $43,280
+Stanford $45,000
+MIT $45,016
+Cambridge $49,350
+Oxford $28,450
+Columbia $55,161
+
+Now, our plan is to add this tuition data to our matrix so that we can proceed with analyzing the data to enable us make an informed decision on our university choice.
+
+First, let's create a vector containing the tuition data:
+```{r}
+tuition <- c(43280, 45000, 45016, 49350, 28450, 55161)
+```
+
+Next, we need to add the tuition vector to university_matrix as a column.
+
+If we want to add the vector tuition as a new column to the university_matrix matrix, its length should be equal to the number of rows in university_matrix.
+
+Earlier in this lesson, we used the rbind() function to combine the university rankings vectors into a single matrix. The rbind() function combines vectors or matrices by row. To add a vector to a matrix as a column or to join two matrices together by column, we used the cbind() function. This means that the cbind() function combines vectors or matrices by column.
+
+To add the vector tuition as a new column to the university_matrix matrix, we can use the cbind() function.
+```{r}
+cbind(university_matrix, tuition)
+# output:
+# _         world_rank quality_of_education influence broad_impact patents tuition
+# harvard            1                    1         1            1       3   43280
+# stanford           2                    9         3            4      10   45000
+# MIT                3                    3         2            2       1   45016
+# cambridge          4                    2         6           13      48   49350
+# oxford             5                    7        12            9      15   28450
+# columbia           6                   13        13           12       4   55161
+
+  
+```
+
+Note: If the matrix does not display correctly, adjust the vertical separator between the learning session and the editor.
+The functions rbind() and cbind are similar in terms of syntax. To practice, let's add the rankings for the University of California, Berkeley, as a new row to the university_matrix using the rbind() function.
+
+practice:
+```{r}
+california <- c(7, 5, 4, 7, 29, 43176)
+# add code
+complete_university_matrix <- rbind(university_matrix, california)
+```
+
+
+8 of 11 · Removing Elements from a Matrix
+Learn
+In this screen, we'll investigate how to remove elements from a matrix. To remove elements from a matrix, we use negative row/column index. Before explaining this, let's recall the content of the complete_university_matrix.
+```{r}
+# _          world_rank quality_of_education influence broad_impact patents tuition
+# harvard             1                    1         1            1       3   43280
+# stanford            2                    9         3            4      10   45000
+# MIT                 3                    3         2            2       1   45016
+# cambridge           4                    2         6           13      48   49350
+# oxford              5                    7        12            9      15   28450
+# columbia            6                   13        13           12       4   55161
+# california          7                    5         4            7      29   43176
+```
+
+We can remove values from the matrix by specifying their row and column preceded by a minus symbol (-) in square brackets ([]). To remove the second row of complete_university_matrix, we can write:
+```{r}
+complete_university_matrix[-2, ]
+# output:
+# _          world_rank quality_of_education influence broad_impact patents tuition
+# harvard             1                    1         1            1       3   43280
+# MIT                 3                    3         2            2       1   45016
+# cambridge           4                    2         6           13      48   49350
+# oxford              5                    7        12            9      15   28450
+# columbia            6                   13        13           12       4   55161
+# california          7                    5         4            7      29   43176
+```
+
+To remove the second and third columns from the USA universities, we can write:
+```{r}
+usa_universities <- c(TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE)
+complete_university_matrix[usa_universities, c(-2, -3)]
+# output:
+# _          world_rank broad_impact patents tuition
+# harvard             1            1       3   43280
+# stanford            2            4      10   45000
+# MIT                 3            2       1   45016
+# columbia            6           12       4   55161
+# california          7            7      29   43176
+```
+
+To remove the second, third and fourth columns from complete_university_matrix where the tuition is greater than or equal to 45000, we can write:
+```{r}
+complete_university_matrix[tuition >= 45000, c(-2, -3, -4)]
+# output:
+# _         world_rank patents tuition
+# stanford           2      10   45000
+# MIT                3       1   45016
+# cambridge          4      48   49350
+# columbia           6       4   55161
+```
+
+practice:
+```{r}
+university_matrix_wtho_first <- complete_university_matrix[ , -1]
+below_10_university_matrix <- complete_university_matrix[broad_impact <= 10, c(-2, -5)]
+```
+
+
+9 of 11 · Performing Operations with Matrices
+Learn
+We learned to perform operations on single values/variables in the previous course. The same operations can also be performed with matrices. In the latter case, element-wise operations are performed. Element-wise operation means to perform operations on every element of a matrice at once. This is a very powerful feature of R.
+
+As we illustrate how this works, let's consider our running dataset, complete_university_matrix.
+```{r}
+# _          world_rank quality_of_education influence broad_impact patents tuition
+# harvard             1                    1         1            1       3   43280
+# stanford            2                    9         3            4      10   45000
+# MIT                 3                    3         2            2       1   45016
+# cambridge           4                    2         6           13      48   49350
+# oxford              5                    7        12            9      15   28450
+# columbia            6                   13        13           12       4   55161
+# california          7                    5         4            7      29   43176
+```
+
+Let's say we want to calculate an aggregate ranking for each university. One way to do this is by calculating the sum of their rankings in every category and we can use the function sum() for this purpose. We use indexing to specify the university row we want to calculate a score for and then, also use negative indexing to remove the sixth column (tuition) which is not a ranking, like this:
+```{r}
+sum(complete_university_matrix["harvard", -6])
+sum(complete_university_matrix["stanford", -6])
+sum(complete_university_matrix["MIT", -6])
+# output:
+# [1] 7 
+# [1] 28
+# [1] 11
+```
+
+However, we're learning to use R with larger datasets. Instead of calculating each university score, we can use the function rowSums() to perform these calculations. Hence, it won't be necessary to specify the row name.
+```{r}
+row_Sums(complete_university_matrix[ , -6])
+#output:
+# harvard   stanford    MIT  cambridge   oxford   columbia california 
+#      7         28     11         73       48         48         52
+```
+
+We can also use the function colSums() to compute an aggregate ranking for each category summing rankings for every university.
+```{r}
+colSums(complete_university_matrix[ , -6])
+# output:
+# world_rank quality_of_education  influence   broad_impact   patents         
+#       28                   40         41             48       110
+```
+
+In addition to functions sum(), rowSums(), and colSums(), R provides the mean(), rowMeans(), and colMeans() functions for calculating average scores, which have a similar syntax as the functions we've just learned. These functions are available when you need to compute average values from your matrices.
+
+practice:
+```{r}
+harvard_scores_avg <- mean(complete_university_matrix[ 1, -6])
+university_scores_avg <- rowMeans(complete_university_matrix[ , -6])
+category_scores_avg <- colMeans(complete_university_matrix[ , -6])
+```
+
+
+10 of 11 · Scoring and Ranking Universities
+Learn
+Now that we've learned to combine vectors into matrices, to extract elements, and to perform operations on matrices, let's return to our initial goal: Analyzing the university ranking data to decide on a university to attend.
+
+To answer this question, let's develop a score for each university that is an aggregate of the rankings and tuition information available in university_matrix. We'll rank the universities for each category we have data for: world_rank, quality_of_education, influence, broad_impact, patents, and tuition. These rankings will allow us to evaluate universities across various aspects.
+
+Then, we can calculate a score for each university from the sum of its rankings.
+
+Let's rank each university relative to others in the dataset.
+```{r}
+# _          world_rank quality_of_education influence broad_impact patents tuition
+# harvard             1                    1         1            1       3   43280
+# stanford            2                    9         3            4      10   45000
+# MIT                 3                    3         2            2       1   45016
+# cambridge           4                    2         6           13      48   49350
+# oxford              5                    7        12            9      15   28450
+# columbia            6                   13        13           12       4   55161
+```
+
+We use the rank() function, along with an expression that indexes the matrix, to specify the category we want to rank the universities by. The rank() function returns a vector of numeric values. For example, to rank universities by quality_of_education, we'd write:
+```{r}
+rank(university_matrix[ , "quality_of_education"])
+# output:
+# harvard   stanford     MIT  cambridge     oxford   columbia
+#      1          5       3          2          4          6
+```
+
+We can do it for every category we have in our dataset and store the results in variables:
+```{r}
+world_rank_rank <- rank(university_matrix[,"world_rank"])
+quality_of_education_rank <- rank(university_matrix[,"quality_of_education"])
+influence_rank <- rank(university_matrix[,"influence"])
+broad_impact_rank <- rank(university_matrix[,"broad_impact"])
+patents_rank <- rank(university_matrix[,"patents"])
+tuition_rank <- rank(university_matrix[,"tuition"])
+```
+
+Now that we've ranked the six universities by each category, let's combine the vectors containing the ranks into a single matrix (ranks_university_matrix) using rbind():
+```{r}
+ranks_university_matrix <- rbind(world_rank_rank, quality_of_education_rank, influence_rank, broad_impact_rank, patents_rank, tuition_rank)
+```
+
+Note that because we used rbind(), we combined the vectors by rows. The new matrix contains the vectors for each category stacked one on top of the other. Each university's rankings are in a different column.
+
+Now, we can calculate a score for each university. Smaller scores indicate higher rankings. Let's assume that we value every category in our university selection equally.
+
+To calculate an aggregate score for each university, let's calculate the sum of its rankings in every category using the colSums() function.
+```{r}
+colSums(ranks_university_matrix)
+# output:
+# harvard   stanford    MIT  cambridge     oxford   columbia 
+#      8         20     15         27         24         32
+```
+
+practice:
+```{r}
+university_matrix_avg <- colMeans(ranks_university_matrix)
+```
+11 of 11 · Next Steps
+```{r}
