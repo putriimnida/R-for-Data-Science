@@ -4,6 +4,9 @@ output: html_document
 date: "2024-10-24"
 ---
 
+Putri's learning on DATAQUEST
+
+
 Materials and Practice
 Project: Install RStudio
 6 of 11 · Installing Tidyverse Packages Collection
@@ -368,3 +371,458 @@ practice:
 extra_is_stem_classes <- c(TRUE, FALSE, FALSE)
 new_is_stem_classes_end <- c(is_stem_classes, extra_is_stem_classes)
 new_is_stem_classes_start <- c(extra_is_stem_classes, is_stem_classes)
+```
+
+
+7 of 11 · Removing Elements from a Vector
+Learn
+On this screen, we'll investigate how to remove elements from a vector by applying negative indexing. First, let's recall the content of the math_grades and exam_grades vectors.
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+```
+
+To remove a value from the vector, we specify their positions preceded by a minus symbol (-) within square brackets ([]). To remove the value in the third position of math_grades, we can write:
+```{r}
+math_grades[-3]
+#output: [1] 92 87
+```
+
+With negative indexing, we've removed the element in the third position. We can also remove multiple values from a vector by creating a vector of indices to exclude preceded by a minus symbol (-). To remove elements in the first, third, and seventh positions from the exam_grades vector, we would write:
+```{r}
+exam_grades[-c(1, 3, 7)]
+#output: [1] 90 95 77 92
+```
+
+practice
+```{r}
+math_without_exam_grades <- math_grades[-1]
+above_90_exam_grades <- exam_grades[-c(3, 5, 7)]
+```
+
+
+
+8 of 11 · Performing Operations with Vectors
+Learn
+We learned to perform operations on single values/variables in the previous course. It is also possible to perform the same operations with vectors. In the later case, element-wise operations are performed. Element-wise operation means to perform operations on every element of multiple vectors at once. This is a very powerful feature of R.
+We can start by creating three vectors, one for each assignment category, to work with:
+```{r}
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+homework_grades <- c(87, 81, 95, 86, 85, 90, 88)
+project_grades <- c(85, 92, 79, 93, 90, 91, 95)
+```
+
+If we are interested in calculating the final scores for each class, we could calculate each class grade individually:
+```{r}
+math <- (92 + 87 + 85) /3
+chemistry <- (90 + 81 + 92)/3 # and so on.
+```
+
+However, as we work with larger datasets in R, this manual appraoch becomes impractical. Instead of calculating each final grade individually, we can use vector arithmetic to perform these calculations.
+
+In vector arithmetic, operations are performed between values in the same position of two vectors. For example, let's add Johnny's exam_grades and homework_grades vectors and save the output as a new vector called sum_grades:
+```{r}
+sum_grades <- exam_grades + homework_grades
+```
+
+practice: 
+```{r}
+class_scores_sum <- exam_grades + homework_grades + project_grades
+class_scores_avg <- class_scores_sum / 3
+```
+
+
+9 of 11 · Vector Recycling
+Learn
+In the previous example, we calculated class scores by performing vector arithmetic. In that scenario, the three vectors we're working with were of the same length. Each had seven values for the seven classes. This isn't always the case, though. For example, what if a grade is missing, like the last homework grade?
+
+When the length of two vectors don't match, R employs a feature called recyclying (or repetition), in order to make them compatible. Here, the shorter vector is recycled until it matches the length of the longer one.
+
+To show how R's recycling behavior works when we perform operations on vectors of different lengths, let's shorten our homework vector to only six values:
+
+```{r}
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+homework_grades <- c(87, 81, 95, 86, 85, 90)
+```
+
+Let's now add the vectors exam_grades and homework_grades.
+The R interpreter determines that the homework_grades vector is shorter than the exam_grades vector and automatically recycles the values in the homework_grades vector until the two vectors are the same length. 
+
+Once the vector lengths match, the R interpreter performs the specified arithmetic operation.
+
+When we perform operations on vectors of unequal lengths in R, we receive the following warning message:
+```{r}
+# Warning message in exam_grades + homework_grades:
+# “longer object length is not a multiple of shorter object length”
+```
+
+R still performs the calculation. The warning message alerts us to the possibility that the different vector lengths were not intended.
+
+Typically, vector recycling is an interesting feature in R, but should always be used wisely.
+- It can be very useful in operations where repetition is natural. For example, with timed data. If we have a vector with 30 days of data (vector_30_days) that we want to sum with a vector of 7 days of data, i.e, data for a week (vector_week), recycling can work well and yield the right result: vector_30_days + vector_week.
+
+- It can also be misleading if the repetition is not desirable. On this screen's example, it may be inappropriate to consider the grade of the first two classes as grades of missing classes.
+
+Scenario of writing programs to calculate the average scores for each class when some grades are missing.
+
+practice:
+```{r}
+exam_grades <- c(92, 90, 84)
+homework_grades <- c(87, 81, 95, 86, 85, 90, 88)
+project_grades <- c(85, 92, 79, 93, 90, 91, 95)
+# Add your code below
+class_scores_sum_recycled <- exam_grades + homework_grades + project_grades
+class_scores_avg_recycled <- class_scores_sum_recycled / 3
+```
+
+
+10 of 11 · Vectors Using Names
+Learn
+Previously, we had learned that in the structure of a vector, each element in a vector is indexed by a number that represents the position of that element. We can also manipulate and access elements of a vector using names, instead of positions.
+
+As we illustrate how it works, let's consider our running dataset again.
+```{r}
+math_grades <- c(92L, 87L, 85L)
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+is_stem_classes <- c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+```
+
+Is there a way to manipulate the names of these values instead of their positions? For example, in the vector math_grades, we would like to identify the first element as the Exams grade, the second as Homework grade and the last as the Projects grade.
+
+We can achieve this by specifying the name of each value using the equal (=) when creating the vector.
+```{r}
+math_grades <- c("Exams"=92L, "Homework"=87L, "Projects"=85L)
+# output:
+# Exams Homework Projects 
+#  92       87       85
+```
+
+When the set of names already exists as a vector we can also achieve this by using the names() function.
+```{r}
+grade_names <- c("Exams", "Homework", "Projects")
+math_grades <- c(92L, 87L, 85L)
+names(math_grades) <- grade_names
+# output: 
+# Exams Homework Projects 
+#   92       87       85
+```
+
+Fortunately, all indexing methods we learned can be applied using names also. For example, to get the first element ("Exams") and the last element ("Projects") of the math_grades vector, we write:
+```{r}
+math_grades[c("Exams", "Projects")]
+# output: 
+# Exams Projects 
+#   92       85
+```
+
+We can replace these values with another one.
+```{r}
+math_grades[c("Exams", "Projects")] <- 80L
+# output: Exams Homework Projects 
+#          80       87       80
+```
+
+If we call the names() function in a vector without assigned names, the function returns the names' vector or NULL if there is no name.
+
+practice:
+```{r}
+exam_grades <- c(92, 90, 84, 95, 77, 92, 85)
+homework_grades <- c(87, 81, 95, 86, 85, 90, 88)
+project_grades <- c(85, 92, 79, 93, 90, 91, 95)
+
+class_names <- c("math", "chemistry", "writing", "art", "history", "music", "physical_education")
+# Add code
+names(exam_grades) <- class_names
+names(homework_grades) <- class_names
+names(project_grades) <- class_names
+```
+
+11 of 11 · Next Steps
+In this lesson, we've learned fundamental skills on how to create, manipulate, add attributes to, index, and perform calculations using vectors. Vectors are a key data structure in R, and the knowledge gained in this lesson forms the basis for more complex data analysis.
+
+In the next lesson, we'll dig deeper into analysis as we work with real-world data on university rankings. Now that we've learned the basics of working with vectors, we'll expand our R capabilities as we work with two-dimensional data structure: matrices.
+
+
+
+Matrices in R
+1 of 11 · Creating Matrices by Restructuring Vectors
+Learn
+In this lesson, we'll learn how to create matrices by restructuring vectors using the matrix() function. Understanding matrices is a very crucial skill for effective data manipulation and analysis in R. The good news is that we'll be reusing the skills from the vector lesson as we dive deeper into creating, manipulating, and performing calculations with matrices.
+
+A matrix is a two-dimensional data structure used to store values of the same data type. Similar to vectors, matrices can be of type logical, numeric (integer and double), and character. Unlike vectors (one-dimension) that can be indifferently considered as a column or a row, matrices are two-dimensional, which introduces the concepts of rows and columns.
+
+As we learned in the vectors' lesson, learning to work with data structures is critical for programming in R, because efficient data storage and operations rely on them. Remember that there are four data structures that will be covered in this course.
+
+One way to create a matrix is by restructuring a vector into a matrix using the matrix() function. This restructuring can be done in two ways: by column (the default) or by row. The function receives the vector to restructure into a matrix, and the number of rows (nrow) and columns (ncol).
+
+To demonstrate this default column way, let's restructure a vector without specifying ncol parameter:
+```{r}
+mat_3x2_bycol <- matrix(1:6, nrow = 3)
+print(mat_3x2_bycol)
+# output:
+# _    [,1] [,2]
+# [1,]    1    4
+# [2,]    2    5
+# [3,]    3    6
+```
+
+Now, let's specify the ncol parameter:
+```{r}
+mat_3x2_bycol <- matrix(1:6, nrow = 3, ncol = 2)
+print(mat_3x2_bycol)
+# output:
+# _    [,1] [,2]
+# [1,]    1    4
+# [2,]    2    5
+# [3,]    3    6
+
+# We get the same result
+```
+
+If we want to restructure the vector by row, we have to set the byrow parameter to TRUE in the matrix() function.
+```{r}
+mat_3x2_byrow <- matrix(1:6, nrow = 3, ncol = 2, byrow = TRUE)
+print(mat_3x2_byrow)
+# output:
+# _    [,1] [,2]
+# [1,]    1    2
+# [2,]    3    4
+# [3,]    5    6
+
+# byrow = TRUE indicates that the vector should be filled in by row
+# If byrow = FALSE (which is the default), the vector would be filled in by column.
+```
+
+We can also provide either nrow or ncol in the matrix() function and R will automatically deduce the missing parameter by dividing the length of the vector by the provided parameter.
+```{r}
+# automatic determination of columns
+matrix(1:6, nrow = 3) # equivalent to ncol: 6 / nrow = 2
+# automatic determination of rows
+matrix(1:6, ncol = 2) # equivalent to nrow: 6 / ncol = 3
+```
+
+Of course, we can use the matrix() function to restructure any kind of vector into a matrix. Here are other examples.
+
+A logical matrix that decides which classes are validated or not for two students (each row represents a student):
+```{r}
+is_validated <- c(TRUE, FALSE, FALSE, TRUE, TRUE, TRUE)
+mat_is_validated <- matrix(is_validated, nrow = 2)
+print(mat_is_validated)
+# output: 
+# _     [,1]  [,2] [,3]
+# [1,]  TRUE FALSE TRUE
+# [2,] FALSE  TRUE TRUE
+```
+
+An integer matrix that contains a sequence of values from 2 to 11 by 3 restructured into a matrix of two columns and rows.
+```{r}
+matrix(seq(from = 2, to = 11, by = 3), nrow = 2, ncol = 2)
+# we use the seq() function to create our sequence of values and we don't store the result in a variable
+
+# output:
+# _    [,1] [,2]
+# [1,]    2    8
+# [2,]    5   11
+```
+
+A character matrix that contains names of the days of a week:
+```{r}
+days_names <- c("Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue")
+vector_month_days <- rep(day_names, 4)
+matrix_month_days <- matrix(vector_month_days, nrow = 4, ncol = 7, byrow = TRUE)
+print(matrix_month_days)
+# output:
+# _    [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7] 
+# [1,] "Wed" "Thu" "Fri" "Sat" "Sun" "Mon" "Tue"
+# [2,] "Wed" "Thu" "Fri" "Sat" "Sun" "Mon" "Tue"
+# [3,] "Wed" "Thu" "Fri" "Sat" "Sun" "Mon" "Tue"
+# [4,] "Wed" "Thu" "Fri" "Sat" "Sun" "Mon" "Tue"
+```
+
+practice:
+```{r}
+vector_1 <- c(1, 4, 5, 9) # [1] 1 4 5 9
+vector_2 <- 1:12 # [1] 1  2  .. 11 12
+vector_3 <- seq(from = 2.0, to = 5.50, by = 0.25) # [1] 2.00 2.25 .. 5.25 5.50
+# Add code
+matrix_1 <- matrix(vector_1, nrow = 2, ncol = 2)
+matrix_2 <- matrix(vector_2, nrow = 4, ncol = 3)
+matrix_3 <- matrix(vector_3, nrow = 3, ncol = 5, byrow = TRUE)
+```
+
+
+2 of 11 · Creating a Matrix by Combining Vectors
+Learn
+On the previous screen, we learned how to create a matrix by restructuring a vector using the matrix() function. On this screen, we will learn how to create a matrix by combining vectors.
+
+
+Combining vectors into matrices is straightforward because of similarities in the two data structures. Both consist of a single data type (here, numeric). 
+
+To combine the vectors into a matrix, we can use the rbind() function. The "r" in rbind() stands for rows — this function allows us to combine multiple vectors by row. 
+
+To demonstrate this, let's combine the universities vectors using rbind():
+```{r}
+harvard <- c(1,1,1,1,3)
+stanford <- c(2,9,3,4,10)
+MIT <- c(3,3,2,2,1)
+cambridge <- c(4,2,6,13,48)
+oxford <- c(5,7,12,9,15)
+columbia <- c(6,13,13,12,4)
+
+university_matrix <- rbind(harvard, stanford, MIT, cambridge, oxford, columbia)
+print(university_matrix)
+# output:
+# _         [,1] [,2] [,3] [,4] [,5]
+# harvard      1    1    1    1    3
+# stanford     2    9    3    4   10
+# MIT          3    3    2    2    1
+# cambridge    4    2    6   13   48
+# oxford       5    7   12    9   15
+# columbia     6   13   13   12    4
+```
+
+To combine vectors into a matrix, remember we can also use the function cbind(). The "c" in cbind() stands for columns — this function also allows us to combine multiple vectors, but, by column.
+
+practice:
+```{r}
+world_rank <- c(1, 2, 3, 4, 5, 6)
+quality_of_education <- c(1, 9, 3, 2, 7, 13)
+influence <- c(1, 3, 2, 6, 12, 13)
+broad_impact <- c(1, 4, 2, 13, 9, 12)
+patents <- c(3, 10, 1, 48, 15, 4)
+# add code
+university_matrix <- cbind(world_rank, quality_of_education, influence, broad_impact, patents)
+```
+
+
+
+3 of 11 · Naming Matrix Rows and Columns
+
+When we use the rbind() function to create a matrix from vectors with name attributes, the vector names are retained as row name attributes. However, our columns don't have any name attributes associated with them. Adding names to rows or columns of a matrix is similar to naming elements of a vector.
+
+Keep in mind that attributes are different from elements of vectors or matrices — they are not stored in these data structures, and you cannot perform operations on them. Attributes make interpreting the contents of vectors and matrices easier.
+
+In the previous lesson, we learned to add name attributes to vectors using the attribute accessor function names(). Since matrices have both rows and columns, there are separate functions for adding name attributes to each:
+
+Rows: rownames()
+
+Columns: colnames()
+
+We already have university names for rows of university_matrix, but we need to add column names so that we can see the categories for each university's ranking.
+
+Let's name the columns in the university_matrix we created in an earlier example:
+```{r}
+university_matrix <- rbind(harvard, stanford, MIT, cambridge, oxford, columbia)
+colnames(university_matrix) <- c("world_rank", "quality_of_education", "influence", "broad_impact", "patents")
+```
+
+If we inspect university_matrix by printing it, we can see the columns are named:
+```{r}
+# _         world_rank quality_of_education influence broad_impact patents
+# harvard            1                    1         1            1       3
+# stanford           2                    9         3            4      10
+# MIT                3                    3         2            2       1
+# cambridge          4                    2         6           13      48
+# oxford             5                    7        12            9      15
+# columbia           6                   13        13           12       4
+```
+
+Naming rows using rownames() uses the same syntax.
+
+As with vectors, if we call the rownames() or colnames() functions in a matrix without assigned names, the function will return the names of rows or columns, or NULL if there is no name.
+
+practice:
+```{r}
+rownames(university_matrix) <- c("harvard", "stanford", "MIT", "cambridge", "oxford", "columbia")
+# output:
+# _         world_rank quality_of_education influence broad_impact patents 
+# harvard     1           1                   1         1           3 
+# stanford    2           9                   3         4           10 
+# MIT         3           3                   2         2           1 
+# cambridge   4           2                   6         13          48 
+# oxford      5           7                   12        9           15 
+# columbia    6           13                  13        12          4
+```
+
+
+4 of 11 · Indexing Matrices by Columns and Rows
+Learn
+Earlier in this course, we learned how to index (i.e., access) vectors, in order to extract specific elements. We can also index matrices. Since matrices are two-dimensional objects, we can index to select:
+a specific value
+matrix[row, column]
+
+a specific row
+matrix[row_index,]
+
+a specific column
+matrix[, column_index]
+
+
+The syntax for indexing matrices is similar to that for indexing vectors. We can extract values from the matrix by specifying the row and/or column positions in square brackets ([]) separated by comma(,).
+
+Let's use the university_matrix to illustrate how to index a matrix.
+```{r}
+# _         world_rank quality_of_education influence broad_impact patents
+# harvard            1                    1         1            1       3
+# stanford           2                    9         3            4      10
+# MIT                3                    3         2            2       1
+# cambridge          4                    2         6           13      48
+# oxford             5                    7        12            9      15
+# columbia           6                   13        13           12       4
+```
+
+
+To return the value in the third row (representing MIT) and second column (corresponding to quality_of_education) of university_matrix, we can write:
+```{r}
+university_matrix[3, 2] # number indexing
+# output: 
+# [1] 3
+```
+
+We can also use the row name ("MIT") and the column name ("quality_of_education""):
+```{r}
+university_matrix["MIT", "quality_of_education"] # name indexing
+# output:
+# [1] 3
+```
+
+To return all the values in the third row (MIT) of university_matrix only, we can write:
+```{r}
+university_matrix[3, ] # we left the column's place empty after comma
+
+# which returns a named vector:
+# output:
+# world_rank quality_of_education   influence   broad_impact   patents 
+#         3                    3           2              2         1
+```
+
+We can also use the row name ("MIT"):
+```{r}
+university_matrix["MIT", ] #we left the column's place empty after the comma
+# which returns a named vector:
+# output:
+# world_rank quality_of_education   influence   broad_impact   patents 
+#         3                    3           2              2         1
+```
+
+To return all the values in the second column (quality_of_education) of university_matrix only, we can write:
+```{r}
+university_matrix[ , 2] # we left the column's place empty before the comma
+# output:
+# harvard  stanford    MIT cambridge    oxford  columbia 
+#     1         9      3         2         7        13
+```
+
+We can also use the column name ("quality_of_education"):
+```{r}
+university_matrix[ , "quality_of_education"] #we left the row's place empty before the comma
+# output:
+# harvard  stanford   MIT cambridge    oxford  columbia 
+#      1         9     3         2         7        13
+```
+
+practice:
+```{r}
+cell_columbia_influence <- university_matrix["columbia", "influence"]
+vector_cambridge <- university_matrix["cambridge", ]
+vector_world_rank <- university_matrix[ ,"world_rank"]
