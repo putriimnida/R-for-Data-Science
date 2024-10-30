@@ -2035,4 +2035,375 @@ recent_grads <- read_csv("recent_grads.csv", col_types = cols())
 
 rank_major_tibble <- select(recent_grads, Rank, Major)
 no_major_code_tibble <- select(recent_grads, -Major_code)
+```
 
+
+Dataframes in R
+4 of 10 · Filtering Rows
+Learn
+On the last screen, we learned how to pick columns from the data using the select() function. In this screen, we'll learn the corresponding filter function to choose rows that we want to keep in the data.
+
+There are many reasons why we would want to filter out particular rows in our data. Using our recent_grads data as an example, perhaps we have to do an analysis that only involves majors with more than 1000 people. Perhaps there is some missing data in one of the rows, and we want to remove them. In both of these cases, we need some specific conditions to filter out the rows.
+
+Recall that each of the rows represents information on a single thing (or in this case, major), so filtering the rows means looking for a subset of the rows that have a particular quality.
+
+Like the select() function, the filter() function first takes in a dataset, followed by conditions on columns that we want to use to filter. Below is an example use of the filter() function on the recent_grads data.
+```{r}
+top_100_majors <- filter(recent_grads, Rank < 100)
+```
+
+If we had multiple conditions, then we would separate them using commas:
+```{r}
+large_engineering_majors <- filter(recent_grads,
+                                   Total > 5000,
+                                   Major_category == "Engineering")
+```
+
+The above code filters the Total column using a number and the Major_code column using a string. It wouldn't make sense for us to filter a numerical column with a string or vice-versa, which is why it's important for us to know about the data types for all of our columns.
+
+Notice too that we've broken up the function into different lines, based on the commas. We could still have everything on one line, but it's good practice to keep one line from getting too long. We can now clearly differentiate between the different conditions, which makes for more readable code.
+
+Since the filter() function requires some kind of conditions, we need to understand comparison operators. This is just a fancy name for the symbols we use to compare objects. We'll learn more about comparison operators in the next lesson, but knowing how to use the operators below will be enough for this lesson.
+
+column == a: equality, "Filter for where the column equals 'a'"
+column != b: not equals, "Filter for where the column is not 'b'"
+column < 5: less than, "Filter for where the column is less than 5"
+column <= 5: less than or equal, "Filter for where the column is less than or equal to 5"
+column > 10: greater than, "Filter for where the column is greater than 10"
+column >= 10: greater than or equal, "Filter for where the column is greater than or equal to 10"
+
+With these comparison operators in mind, practice using the filter() function to make your own subsets of the data.
+
+
+PRACTICE
+
+Filter the recent_grads data for those with a Sample_size value greater than 100. Assign this filtered tibble to the variable large_sample_majors.
+Filter the recent_grads data:
+Where Total is less than or equal to 70,000
+Where Median is greater than 40,000
+Where the Major_category isn't Engineering
+Assign this tibble to the variable non_engineering_majors.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+
+
+large_sample_majors <- filter(recent_grads, Sample_size > 100)
+non_engineering_majors <- filter(recent_grads, 
+                                 Total <= 70000, 
+                                 Median > 40000, 
+                                 Major_category != "Engineering")
+```
+
+
+Dataframes in R
+5 of 10 · Piping With The %>% Operator
+Learn
+So far in this lesson, we have taken tibbles and passed them into either the select() function or the filter() function to get a subset of the same tibble. Both of these functions return an altered version of the original tibble. Let's say that we want to filter both rows and columns of a particular tibble, which means we want to combine the select() function and filter() functions. We might write this code out like this:
+
+```{r}
+ranked_majors <- select(recent_grads, Rank, Major, Total)
+low_total_ranked_majors <- filter(ranked_majors, Total < 2000)
+```
+
+In the code above, we create a new variable ranked_majors that contains three columns picked from recent_grads. After this, the ranked_majors tibble is fed into the filter() function and is assigned to another new variable low_total_ranked_majors.
+
+There's nothing wrong with this approach, but imagine a scenario where there are multiple data manipulation steps we need to take. Each step creates a new tibble, assign it to a new variable and then pass this variable into a new function. This creates a situation where we're creating a lot of tibbles that are just used once, and we have to keep track of all these new variables.
+
+The tidyverse provides us with a beautiful tool that will allow us to streamline this process and do all of our data manipulation in one place. That tool is the %>% function, named the pipe operator. The pipe operator allows us to chain data manipulation functions together, that is to take the output of one function and use it directly as the input of another function. In terms of code, we can rewrite the above using %>%:
+```{r}
+low_total_ranked_majors <- recent_grads %>% 
+  select(Rank, Major, Total) %>%
+  filter(Total < 2000)
+```
+
+The two code blocks produce exactly the same result, but the %>% operator allows us to better see the flow of our data manipulation. In the first line of the new code, the recent_grads tibble is piped into the select() function. Similarly, the output of select() is passed into the filter() function, where the pipeline ends.
+
+Using the %>% operator, we only need to create one new variable, and we are able to have our entire data manipulation pipeline into one place. This is extremely powerful for code readability and simplification. Less variables means less room for errors down the line, and more readable code means less time spent trying to understand what it's trying to do. We encourage you to use piping as you learn more about R and the tidyverse.
+
+The code we've used so far uses %>% in the context of tibbles, but we can also use it with any data structures of variables that we have in R! We'll demonstrate this below:
+```{r}
+# Old way of summing a vector
+sum(c(1, 2, 3, 4, 5))
+# [1] 15
+
+# "Piping" the vector into the sum function
+c(1, 2, 3, 4, 5) %>% sum()
+# [1] 15
+
+# Old way of printing a string in the R console
+print("Learning about the pipe!")
+# [1] "Learning about the pipe!"
+
+# "Piping" a string into the print function
+"Learning about the pipe!" %>% print
+# [1] "Learning about the pipe!"
+```
+
+Incorporating the %>% operator into your code may take some adjustment, but it will greatly increase the readability and speed of your coding. Get some practice using it below.
+
+PRACTICE
+Starting with the recent_grads tibble, create a pipeline using %>% that does the following:
+Removes the Rank and Major columns and
+Filters for majors with a Median pay less than 50000
+Finally, assign the output of this pipeline to the variable pipeline_output.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+pipeline_output <- recent_grads %>%
+  select(-Rank, -Major) %>%
+  filter(Median < 50000)
+```
+
+
+Dataframes in R
+6 of 10 · Creating New Columns
+Learn
+Now that we know how to filter our tibbles down based on row or column, we can move onto a new method of manipulating our data. Once we've filtered our data down to what we need, the next step is often to create new columns from the existing data.
+
+One common example of creating new data from existing columns is converting counts into percentages. In the recent_grads data, we have a Total column (total number of surveyed people with the major) and a Men column (number of males). These numbers by themselves don't tell us much since the Totals vary so much, but if we create a new column based on percentages, this will allow us to better compare majors.
+
+In order to create a new column based on other columns, we need to use the mutate() function. Within a mutate() function, we name new columns and define how they should be calculated. For example, we can do the following:
+```{r}
+new_recent_grads <- recent_grads %>%
+  mutate(
+    prop_male = Men / Total,
+    prop_male_gt_half = prop_male > 0.5
+  )
+```
+
+The result of the code is another new tibble new_recent_grads that contains all of the data that recent_grads has, with two additional columns prop_male and prop_male_gt_half. The mutate() function is what creates both of these new columns.
+
+To make the prop_male column, the mutate() function takes the Men value and divides it by the Total value for each row. It does this for each row and assembles prop_male with all these values.
+
+The second new column prop_male_gt_half gets constructed in a similar manner, but it actually uses prop_male. We're allowed to reference new columns in the mutate() function, which is what makes it so powerful. All of the rows in prop_male are compared to the value 0.5. If they're greater, prop_male_gt_half will be TRUE and FALSE otherwise.
+
+Now that you've learned about the mutate() function, get some practice making new columns in recent_grads.
+
+
+PRACTICE
+Create three new columns in recent_grads and assign the result to the variable new_recent_grads:
+
+One column should be called prop_employed, and it should be the proportion of people employed by major.
+The second new column should be called prop_women, and it should be the proportion of women in the major.
+The final column should be called prop_women_gt_employed, and it should be a logical column where the proportion of women in the major is greater than (>) the proportion of people employed by major.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+new_recent_grads <- recent_grads %>%
+  mutate(
+      prop_employed = Employed / Total,
+      prop_women = Women / Total,
+      prop_women_gt_employed = prop_women > prop_employed
+      )
+```
+
+
+Dataframes in R
+7 of 10 · Sorting Data
+Learn
+After creating columns of interest, it's good practice to reexamine the data to see if it is accurate and matches your expectations. Sometimes mistakes will be made in calculations, and it's better to catch them early.
+
+Let's say that we're not sure if the prop_male column we calculated came out correctly. We would expect the higher values of prop_male to have either high numbers of Men, low Total or both. To examine this, we need to sort the data based on the prop_male column in descending order and examine the first few values.
+
+The arrange() function can help us with that. This function takes in one or more columns that we want to sort the tibble by. Taking the example from the last screen, we can sort by prop_male by doing the following:
+```{r}
+new_recent_grads <- recent_grads %>%
+  mutate(
+    prop_male = Men / Total
+  ) %>%
+  arrange(-prop_male) %>%
+  select(Total, Men, prop_male)
+```
+
+By default, the arrange() function sorts things into ascending order. If we were just to supply prop_male by itself to arrange(), then the tibble would start with the row with the smallest value. To reverse this, we just need to add a - sign to the beginning of the column name to indicate sorting in descending order.
+
+If we supply multiple columns into the arrange() function, then the data will be sorted from left to right. That is to say, after sorting on the first column, the arrange() function will perform subsorts based on the columns that come after it.
+
+Now we can have a quick look at new_recent_grads to prove to ourselves that the calculation was correct. Using the head() function, we can view the first few rows:
+```{r}
+# output:
+# > head(new_recent_grads)
+## A tibble: 6 x 3
+#  Total   Men prop_male
+        
+# 1   124   124     1    
+# 2  4790  4419     0.923
+# 3 18498 16820     0.909
+# 4   756   679     0.898
+# 5  1258  1123     0.893
+# 6 91227 80320     0.880
+```
+
+The major with the highest proportion of men is entirely male, which fits our intuition about what the column needs to represent. Using the above code as an example, try to answer this analytical question about the recent_grads data.
+
+PRACTICE
+What major has the lowest proportion of employed graduates?
+
+Assign your answer to the variable least_employed_major.
+Enter your answer exactly how it appears in the data.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+least_employed_major <- recent_grads %>%
+  mutate(
+    prop_employed = Employed / Total
+  ) %>% 
+  arrange(prop_employed) %>% 
+  select(Major, Employed, Total, prop_employed)
+    
+head(least_employed_major)
+
+least_employed_major <- "MILITARY TECHNOLOGIES"
+```
+
+Dataframes in R
+8 of 10 · Summarizing Data
+Learn
+In the last screen, we inspected a tibble visually after doing some sorting. While visual inspection is useful in a lot of situations, it's better used for quick glances and checks.
+
+In other cases, we'll want to gather some summary statistics to get a better understanding of our data. Instead of calculating these by hand, we can use the summarize() function to get these values with a short line of code. For example, if we want to see what the average unemployment rate was across the majors:
+```{r}
+summary_table <- recent_grads %>%
+  summarize(
+    avg_unemp = mean(Unemployment_rate),
+    min_unemp = min(Unemployment_rate),
+    max_unemp = max(Unemployment_rate)
+  )
+```
+
+A common theme among the functions we've learned in this lesson is that they all produce tibbles, and the same applies to the summarize() function. Inspecting summary_table in the console produces:
+```{r}
+# output:
+# > summary_table
+## A tibble: 1 x 3
+#  avg_unemp min_unemp max_unemp
+                
+# 1    0.0682         0     0.177
+```
+
+The summarize() function is often combined with the group_by() function which allows splitting the dataframe into several subsets on which we can apply functions. This workflow is known as split-apply-combine workflow and it is widely used in data analysis. It consists in three steps:
+
+1. Split: The dataset is divided into subsets using the function group_by().
+2. Apply: Within each subsets, we apply functions like the summarize() function to gather summary statistics.
+3. Combine: We combine the results back together using the summarize() function again. THis now produces a summary table.
+
+In the above example, we can introduce the group_by() function to summarize the dataframe by Major_category.
+```{r}
+summary_by_Major_category <- recent_grads %>%
+  group_by(Major_category) %>%
+  summarize(
+    avg_unemp = mean(Unemployment_rate),
+    min_unemp = min(Unemployment_rate),
+    max_unemp = max(Unemployment_rate)
+  )
+
+# display the first three rows
+head(summary_by_Major_category, 3)
+```
+
+PRACTICE
+1. Create a new tibble called minmax_median_income that calculates the minimum and maximum value in the Median column.
+Assign the minimum value the column name min_income.
+Assign the maximum value the column name max_income.
+
+2. Create a new tibble called minmax_median_income_by_major that calculates the minimum and maximum value in the Median column grouping by the Major column.
+Assign the minimum value the column name min_income.
+Assign the maximum value the column name max_income.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+minmax_median_income <- recent_grads %>%
+  summarize(
+      min_income = min(Median), 
+      max_income = max(Median)
+  )
+
+minmax_median_income_by_major <- recent_grads %>%
+  group_by(Major) %>%
+  summarize(
+      min_income = min(Median), 
+      max_income = max(Median)
+  )
+```
+
+
+Dataframes in R
+9 of 10 · Using Tibble Columns As Vectors
+Learn
+As we wrap up this lesson, we'll cover one last function that will prove useful in your data analysis tasks. There are times where we'll want to isolate a column from a tibble and use it as a vector so that we can perform some operations on it such as calculatings sums and averages, as we would any other vector. We will use summing up values as an example on this screen.
+
+There are 3 ways to do this, one of which we will recommend over the others.
+
+The first way we can use a tibble column as a vector is through the $ (read as "dollar sign") notation. The syntax for this is [tibble]$[column_name], and we'll use it to get the Sample_size column from the recent_grads tibble:
+```{r}
+sample_sizes <- recent_grads$Sample_size
+sample_sizes %>% sum
+# output:
+# [1] 61602
+```
+
+We use $ notation to "pull" the Sample_size column from recent_grads and store it into the sample_sizes variable. By using $ notation, sample_sizes now acts as a vector, so we can pipe it into the sum() function. We could have also just coded it as recent_grads$Sample_size %>% sum, but we wanted to show that these results can be stored into variables as well.
+
+If there's whitespace in a column name, then we are unable to use the $ notation. For example, let's create a tibble named my_data with a column named "Income Level" that contains income categories:
+```{r}
+# Create a sample tibble with a column containing whitespace in its name
+my_data <- ("Income Level" = c("Low", "Medium", "High"), Amount = c(100, 200, 300))
+
+# Attempting to access a column with whitespace using $
+my_data$Income Level
+
+# output
+# Error: unexpected symbol in "my_data$Income Level"
+```
+
+This is so because the column contains whitespace and is NOT suitable for the the $ notation.
+
+The second way we can use a tibble column as a vector is through double-bracket [[ ]] notation. The syntax for this is [tibble][["column_name"]].
+```{r}
+sample_sizes <- recent_grads[["Sample_size"]]
+sample_sizes %>% sum
+# output: 
+# [1] 61602
+```
+
+Notice that the column name must be contained in quotes. This is what allows the double-bracket method to account for columns with whitespace in it. Let's illustrate this with the sample tibble my_data we created earlier:
+```{r}
+my_data[["Income Level"]]
+# output: [1] "Low" "Medium" "High"
+
+```
+
+The final way that we can use a tibble column as a vector is through the pull() function. This is the way we recommend that you use columns as vectors from here on out.
+```{r}
+sample_sizes <- recent_grads %>% pull(Sample_size)
+sample_sizes %>% sum
+# output:
+# [1] 61602
+```
+
+We recommend using the pull() function over $ or double-bracket notation because it flows better with the %>% operator and increases readability. Get some practice using the pull() function before you wrap up this lesson.
+
+PRACTICE
+1. Using the pull() function, take the Median column from recent_grads dataset and assign it to the variable medians.
+2. Using the max() function, find the highest value that is present in the medians variable and assign it to the variable highest_median.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+medians <- recent_grads %>% pull(Median)
+highest_median <- medians %>% max
+```
+
+Dataframes in R
+10 of 10 · Next Steps
+
+```{r}
