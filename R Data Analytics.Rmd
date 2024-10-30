@@ -1907,4 +1907,132 @@ university_clubs <- list(rugby_club = rugby_club, ballroom_dancing = ballroom_da
 ```
 
 10 of 10 · Next Steps
+
+
+Dataframes in R
+1 of 10 · Introduction
+Learn
+Throughout this course, we've learned about different data structures available to us in R. Matrices and their use for storing numbers in an organized structure, and how lists are useful for keeping data of different types together in the same data structure. As we approach the end of this course, we're now going to focus our attention on another very essential data structure, tabular data.
+
+Tabular data is data organized into rows and columns. If you've ever worked with data from Microsoft Excel, Google Sheets or a humble comma separated value file (CSV), then you've already been exposed to some form of tabular data. In tabular data, a single row represents information on a single thing or entity. This information is divided up into distinct columns. As we stack rows together, we get a rectangle of data, or table, that gives tabular data its name. 
+
+As you can see, each row contains information about a single person, and this information is subdivided into each of their names, grades, hobbies and their language of preference. The spot where a single row and single column meet is called a cell. Notice that each cell contains just a single characteristic about a single person. Each column can have its own data type as well. We can see that the name and hobby columns contains strings, grade contains numbers and prefers_R contains logicals.
+
+In R, the tidyverse packages have a special way to handle tabular data called a tibble. Tibbles are like data frames, but with added functionality that makes them easier to work with. The difference between a tibble and a data frame is that tibbles are compatible with all of the packages associated with the tidyverse. As we'll learn more throughout this lesson, we can create elegant and easy-to-read R code using tibbles and the tidyverse. Tibbles also help streamline the process of data analysis and make you an even more effective R programmer. Let's get to learning!
+
+
+
+2 of 10 · Getting Familiar With The Data
+Learn
+For this lesson, we'll be working with a dataset containing information on the earning potential of various college majors. The dataset contains information such as the number of people surveyed for the data, the median salary of people who took the major, and employment rates of graduates. As we learn more about how to manipulate tibbles, we'll use this dataset to practice the concepts and functions that you learn.
+
+In our Introduction to R course, we learned about the read_csv() function from the readr package, which allows us to read in CSV files into our R session. Assuming that the name of the dataset was recent_grads.csv and that it was in our working directory, we can read the data into a variable recent_grads using the following code:
 ```{r}
+library(readr)
+recent_grads <- read_csv("recent_grads.csv")
+```
+
+After bringing in the readr package, we have access to all of the functions in it, thereby making the read_csv() function available for us to use.
+
+Now that we have our data in a variable called recent_grads, we can inspect it directly in the "Variables" section of the Dataquest code editor. Since we read in a CSV file, we know that we're working with tabular data. If we try to look at recent_grads directly in RStudio, we'll find that it's actually imported as a tibble!
+```{r}
+# > recent_grads
+# A tibble: 173 x 18 # More output follows, but is shortened
+```
+
+But you'll have to take our word for it, because the dataframe output looks different in the Dataquest user interface.
+
+Recall that when we use the read_csv() function, R returns a dataframe containing our dataset and then, tries to identify the correct data types of each column. A message is thereby displayed at the end of the process to let us know the data type chosen for each column. This message is not an error. It is worth reading this message to learn about the columns in the dataframe making sure that each column has the right type. In this case, the output looks like this:
+
+Parsed with column specification:
+cols(
+  Rank = col_double(),
+  Major_code = col_double(),
+  Major = col_character(),
+  Total = col_double(),
+  Men = col_double(),
+  Women = col_double(),
+  Major_category = col_character(),
+  Sample_size = col_double(),
+  Employed = col_double(),
+  Full_time = col_double(),
+  Part_time = col_double(),
+  Full_time_year_round = col_double(),
+  Unemployed = col_double(),
+  Unemployment_rate = col_double(),
+  Median = col_double(),
+  College_jobs = col_double(),
+  Non_college_jobs = col_double(),
+  Low_wage_jobs = col_double()
+)
+
+
+The first thing any data analyst should do before carrying out any sort of analysis is to become familiar with the available dataset. This involves many things, but we should be focused on answering the following questions first:
+
+What are the column names of the data?
+What are the data types of each column?
+How many rows are in the data? Columns?
+
+There are many ways that we can get the answers to these questions, but we'll explore a few different methods. If we just wanted to get a quick summary of the data itself, we can use the glimpse() function from the tibble library. The glimpse() function will help answer all three of the above questions for us. We show a truncated version of the function output below.
+```{r}
+# > glimpse(recent_grads)
+# Observations: 173
+# Variables: 18
+# $ Rank  1, 2...
+# $ Major_code  2419, 2416...
+# $ Major  "PETROLEUM ENGINEERING", "MINING AND MINERAL ENGINEERING"...
+```
+
+Important note: To view the output of glimpse() in the Dataquest editor, we've added the function argument col_types = cols() in the display code to suppress the read_csv() column specification message described above.
+
+The number of "Observations" corresponds to the number of rows in the dataset, while the number of "Variables" tells us the number of columns. After these numbers, we see each of the variables/columns in more detail, including the column name, its type and a small sample of the values contained in the column. For example, the Rank column is the first column in the data and contains numbers in the form of doubles (dbl). Since each row represents a major, the Rank column represents the ranking of each major. Knowing the column names and types is important because it allows us to filter and choose subsets of the data.
+
+One weakness of the glimpse() function is that it's purely for reading. There are times where we might actually need the number of rows or columns to store in a variable. If we want to do this, we would need to use the nrow() or ncol() functions, respectively. Both of these functions can take in a tibble and they output the number of rows/columns.
+
+```{r}
+nrow(data) # returns the number of rows in `data`
+ncol(data) # returns the number of columns in `data`
+```
+
+If we want to get just the column names of the data itself, we can use the names() function. Like nrow() and ncol(), names() can take in a tibble and return the column names of the tibble.
+
+PRACTICE
+```{r}
+library(tidyverse)
+# Supply col_types = cols() to suppress column specification output 
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+glimpse(recent_grads)
+names(recent_grads)
+
+num_rows <- nrow(recent_grads)
+num_cols <- ncol(recent_grads)
+```
+
+Dataframes in R
+3 of 10 · Selecting Columns
+Learn
+Now that we're more familiar with the recent_grads data, we can start manipulating it so that we can use it for data analysis later. In general, most analyses won't need all of the columns of a dataset. In these situations, it's good practice to pare down the data to just the columns that you need.
+
+To filter the data by columns, we can use the select() function which comes from the dplyr library. Notice that this is also a tidyverse library. The select() function takes a varying number of arguments since it doesn't know ahead of time how many columns a programmer may need from it. The first argument that the select() function takes is a tibble, and the following arguments are column names that are in the tibble. An example follows using the recent_grads dataset:
+```{r}
+filtered_data <- select(recent_grads, Rank, Major)
+```
+
+The above code took in the recent_grads tibble and used the select() function to pick out two columns from it, Rank and Major. The filtered data is then assigned to the variable filtered_data. We can specify as many columns as we want to keep in the select() function, as long as they are actually present in the tibble.
+
+The select() function can also be used to remove columns from a dataset. The syntax is similar to keeping columns, with a minor tweak. The code below removes one column from the data:
+```{r}
+filtered_data <- select(recent_grads, -College_jobs)
+```
+
+When we use a - ("minus sign") before a column name, we're actually telling the select() function that we want to remove that column. This is very useful when there are many columns in the dataset because, it would be cumbersome to write the names of so many columns if we were picking columns to keep. Instead of doing this, it's faster to remove columns that we don't want. In general, you're only going to do one action in the select() function: either pick columns to keep or remove columns you don't want. It wouldn't make sense to try to do both in the same select() function.
+
+With this in mind, let's practice using the select() function on recent_grads.
+PRACTICE
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+rank_major_tibble <- select(recent_grads, Rank, Major)
+no_major_code_tibble <- select(recent_grads, -Major_code)
+
