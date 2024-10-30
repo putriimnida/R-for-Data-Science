@@ -1166,4 +1166,745 @@ practice:
 university_matrix_avg <- colMeans(ranks_university_matrix)
 ```
 11 of 11 · Next Steps
+
+
+Lists in R
+1 of 10 · Lists: Objects That Can Contain Multiple Data Types
+
+Learning a data structure implies learning:
+- To create a data structure.
+- To index (i.e., accessing) data structure's elements.
+- To add/remove elements from a data structure.
+- To use data structures in our operations/tasks.
+- In the first two lessons of this course, we learned about two different data structures:
+
+Vectors: One-dimensional data structures that hold a single data type.
+
+Matrices: Two-dimensional data structures that hold a single data type.
+
+In the last lesson, we worked with matrices to analyze university rankings, which helped us take decision on the topmost university for us to attend. Now that we're about to begin our first year at Harvard, we're faced with another decision on clubs (sports, art, music, etc) to join, so that we can make friends with similar interests. This is where lists come in.
+
+In this lesson, we'll learn how to work with data stored in lists as we organize the results of our investigation of different university clubs.
+
+A list, is a multi-dimensional data structure which contains MULTIPLE DATA TYPE of objects. The objects may consist of single data elements (literal values), different data structures like vectors, matrices, and even other lists.
+
+Why would we want to create lists of objects in R? The answer is that storing objects in lists allows us to make use of some very powerful R features for performing the same operation on each object in our list, which can let us avoid repetitively typing the same function.
+
+We'll learn how to harness the power of lists for performing tasks such as those illustrated above in the next course. For now, we'll proceed with providing a strong foundation in creating, manipulating, and understanding the structure of lists.
+
+Practice:
+```{r}
+harvard <- c(1,1,1,1,3)
+stanford <- c(2,9,3,4,10)
+MIT <- c(3,3,2,2,1)
+cambridge <- c(4,2,6,13,48)
+oxford <- c(5,7,12,9,15)
+columbia <- c(6,13,13,12,4)
+# add code
+category_names <- c("world_rank", "quality_of_education", "influence", "broad_impact", "patents")
+university_matrix <- rbind(harvard, stanford, MIT, cambridge, oxford, columbia) 
+colnames(university_matrix) <- category_names
+```
+
+2 of 10 · Creating a List
+Learn
+On this screen, we learn how to create a list.
+
+A list is created using the list() function. This function receives a sequence of values of ANY TYPE separated by commas (,). R then takes charge of constructing a list from those values.
+
+In the following example, we are storing three club names in a list:
+```{r}
+list("tennis", "films", "outdoors")
+# output:
+# [[1]]
+# [1] "tennis"
+
+# [[2]]
+# [1] "film"
+
+# [[3]]
+# [1] "outdoors"
+```
+
+We can also use the function c() to create a vector in the example above because all the values are of the SAME TYPE.
+
+Let's now try to create a vector with DIFFERENT TYPES.
+
+In the following example, we are attempting to create a vector that contains the University of Harvard's name, its rankings in every category, and if it's in the USA or not.
+```{r}
+c("harvard", 1, 1, 1, 1, 3, TRUE)
+# Not minding the different data types, this returns a character vector:
+# OUTPUT:
+# [1] "harvard" "1"      "1"      "1"      "1"      "3"      "TRUE"
+```
+
+We may wonder why did that last command create a character vector? Since we are trying to create a vector of different types (character + numeric + logical), which is not allowed in R, R transforms all the values into the same type following the highest type rule, that's why all the values are of the character type.
+
+However, if we want to preserve the different data types in the same object, we need to use the list() function like so:
+```{r}
+list("harvard", 1, 1, 1, 1, 3, TRUE)
+# output:
+# [[1]]
+# [1] "harvard"
+
+# [[2]]
+# [1] 1
+
+# [[3]]
+# [1] 1
+
+# [[4]]
+# [1] 1
+
+# [[5]]
+# [1] 1
+
+# [[6]]
+# [1] 3
+
+# [[7]]
+# [1] TRUE
+```
+
+We can see that R understands each type and keeps them as such in the data structure.
+
+Let's create a list where the rankings in the previous list are stored as a vector in the list.
+```{r}
+list("harvard", c(1, 1, 1, 1, 3), TRUE)
+# output:
+# [[1]]
+# [1] "harvard"
+
+# [[2]]
+# [1] 1 1 1 1 3
+
+# [[3]]
+# [1] TRUE
+```
+
+We can also name the elements in the list like when we created named vectors. To specify names we can use =: name = the_object.
+```{r}
+list(name = "harvard", ranking = c(1, 1, 1, 1, 3), is_in_usa = TRUE)
+# OUTPUT:
+# $name
+# [1] "harvard"
+
+# $ranking
+# [1] 1 1 1 1 3
+
+# $is_in_usa
+# [1] TRUE
+```
+
+practice:
+```{r}
+university_clubs <- list("ballroom dancing", "rugby", "bird watching", "pottery")
+mit_list <- list("MIT", c(3,3,2,2,1), TRUE)
+mit_named_list <- list(name = "MIT", ranking = c(3,3,2,2,1), is_in_usa = TRUE)
+```
+
+
+3 of 10 · Anatomy of a List
+Learn
+Let's look at the list of clubs we created on the previous screen:
+```{r}
+# output:
+# [[1]]
+# [1] "ballroom dancing"
+
+# [[2]]
+# [1] "rugby"
+
+# [[3]]
+# [1] "bird watching"
+
+# [[4]]
+# [1] "pottery"
+```
+
+Note that each club we stored in the list appears on its own line, and its position within the list is shown in brackets above it ([[1]] through [[4]]). This indicates the order of the objects as stored in the list.
+
+We know that the university_clubs list contains only single elements of character data type. Recall, however, that lists may contain objects of any data type. This flexible feature allows us to use them to store other information from our club search, including club descriptions, types of activities, the cost of club dues, and the times when the club holds meetings.
+
+Here is some of the data we've gathered for the chess club:
+```{r}
+club_title <- c("Chess Club")
+club_description <- c("Meets two nights a week for members to play chess. Snacks are provided")
+club_dues <- c(50, 20, 15)
+meeting_days <- c("Monday", "Wednesday")
+meeting_times <- c("6:00 pm", "8:00 pm")
+```
+
+The pieces of information we have are:
+
+Club title (a vector of character data)
+Club description (a vector of character data)
+Club dues (a vector of numeric data)
+Meeting days (a vector of character data)
+Meeting times (a vector of character data)
+Let's create a list to organize and store this data.
+
+practice:
+```{r}
+club_title <- c("Chess Club")
+club_description <- c("Meets two nights a week for members to play chess. Snacks are provided.")
+club_dues <- c(50, 20, 15)
+meeting_days <- c("Monday", "Wednesday")
+meeting_times <- c("6:00 pm", "8:00 pm")
+
+# add code
+club_meetings <- rbind(meeting_days, meeting_times)
+chess_club <- list(club_title, club_description, club_dues, club_meetings)
+```
+
+4 of 10 · Naming Objects in a List
+Learn
+On this screen, we'll learn how to give names to objects within a list in R. This can make working with lists more organized and easy to understand.
+
+We created the list chess_club on the previous screen to organize the information we gathered about the club:
+```{r}
+# output:
+# [[1]]
+# [1] "Chess Club"
+
+# [[2]]
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# [[3]]
+# [1] 50 20 15
+
+# [[4]]
+#              [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+When you create a list in R, the individual objects within the list are not automatically assigned names, but their original data types are retained. You can then add names to the objects, as we learned before.
+```{r}
+rugby_club <- list(club_title = c("Rugby Club"), club_description = c("Play matches against clubs from local universities"), club_dues = c(100, 50))
+
+# The resulting list, rugby_club, contains three objects with names assigned to them:
+# output:
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 100  50
+```
+
+However, we're learning to use R with larger datasets and this can become very cumbersome. Instead of assigning a name to each element manually, we can use a vector of character data to assign names to objects of a list. Assigning names to list objects is similar to assigning names to vector elements using the names() accessor function.
+
+To illustrate this, let's create a list containing data for the ballroom dancing club:
+```{r}
+ballroom_dancing <- list(c("Ballroom Dancing"), c("Practices waltz, salsa, and tango dancing for competitions with local university dance teams"), c(150))
+
+# output:
+# [[1]]
+# [1] "Ballroom Dancing Club"
+
+# [[2]]
+# [1] "Practices waltz, salsa, and tango dancing for competitions with local university dance teams"
+
+# [[3]]
+# [1] 150
+```
+
+Now, let's assign a name to each object in ballroom_dancing:
+```{r}
+names(ballroom_dancing) <- c("club_title", "club_description", "club_dues")
+# If we display ballroom_dancing, we'll see that each object is named:
+# output:
+# $club_title
+# [1] "Ballroom Dancing Club"
+
+# $club_description
+# [1] "Practices waltz, salsa, and tango dancing for competitions with local university dance teams"
+
+# $club_dues
+# [1] 150
+```
+
+As with vectors and matrices, if we call the names() function in a list without assigned names, the function returns the names's vector or NULL if there is no name.
+
+Let's assign names to objects of the chess_club list that we created earlier.
+
+practice:
+Use the names() function to assign the chess_club_names vector as names to elements of the chess_club list.
+```{r}
+club_meetings <- rbind(meeting_days, meeting_times)
+chess_club <- list(club_title, club_description, club_dues, club_meetings)
+chess_club_names <- c("club_title", "club_description", "club_dues", "club_meetings")
+# Type your code below
+names(chess_club) <- c("club_title", "club_description", "club_dues", "club_meetings")
+```
+
+
+5 of 10 · Indexing Lists: Accessing Data in Lists
+Learn
+In previous lessons, we learned to index vectors and matrices to extract a subset of values. Similarly, we can index lists.
+
+Generally, we'll use two different indexing operations on lists:
+
+Single brackets to return a list of selected elements ([])
+Double brackets to return a single element ([[]])
+Let's take the rugby_club list as an example:
+```{r}
+# output:
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 100  50
+```
+
+If we want to extract the second object in the list, we use single brackets [] like the following code:
+```{r}
+rugby_club[2]
+# output:
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+```
+
+If we check the type of the object, with the function class(), we see that it is a list:
+```{r}
+class(rugby_club[2])
+# output:
+# [1] "list"
+```
+
+Let's perform this operation using double brackets:
+```{r}
+rugby_club[[2]]
+# the output is: [1] "Plays matches against clubs from local universities"
+
+class(rugby_club[[2]])
+# the output is: [1] "character"
+```
+
+This time, the output is a single element of the data type character.
+
+To better illustrate when we'd choose to use single or double brackets to index a list, let's extract multiple list elements.
+
+Recall from earlier lessons that we can extract multiple elements using c(). Let's use single brackets to extract the first and third objects in the rugby_club list:
+```{r}
+rugby_club[c(1,3)]
+# The output consists of a list of the first and third vectors that we stored in rugby_club:
+# output:
+# $club_title
+# [1] "Rugby Club"
+
+# $club_dues
+# [1] 100  50
+```
+
+What happens if we use double brackets to index rugby_club?
+```{r}
+rugby_club[[c(3,2)]]
+# Now, the output consists of the second element in the third object of the list:
+# [1] 50
+```
+
+When objects in a list have names associated with them, we can use them for indexing.
+
+The following three lines of code extract the elements contained in the third object in the rugby_club list:
+
+Using the dollar sign ($) symbol to extract elements of a named object of a list:
+```{r}
+rugby_club$club_dues
+# the output is: [1] 100  50
+```
+
+Using the name of the object to extract in brackets:
+```{r}
+rugby_club[["club_dues"]]
+# the output is: [1] 100  50
+```
+
+Using the position of the object to extract in brackets:
+```{r}
+rugby_club[[3]]
+# the output is: [1] 100  50
+```
+
+PRACTICE
+Let's practice indexing the chess_club list.
+Here is the chess_club list:
+```{r}
+# $club_title
+# [1] "Chess Club"
+
+# $club_description
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# $club_dues
+# [1] 50 20 15
+
+# $club_meetings
+#              [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+Index the chess_club list to return the fourth object, a matrix.
+Store the result in the variable meeting_matrix.
+
+Index the third object of the chess_club list, club_dues, to return the second element of that object.
+Store the result in the variable club_second_due.
+```{r}
+meeting_matrix <- chess_club[[4]]
+club_second_due <- chess_club[[c(3,2)]]
+```
+
+
+
+6 of 10 · Modifying List Elements
+Learn
+In addition to extracting elements, we can also change specific list components.
+
+For example, let's say you have been informed that the club dues paid by members at the start of the fall and spring semesters have increased by 10 USD each.
+
+As a result, we'd like to change the values of club_dues we have stored in our rugby_club list:
+```{r}
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 100  50
+```
+
+To replace the club_dues values in the rugby_club list with the new costs we've learned about, here are three ways to do it:
+```{r}
+rugby_club[[3]] <- c(110, 60) # c(..., ...) assigning a new value
+#index the third object by position (using double brackets)
+
+rugby_club[["club_dues"]] <- c(110, 60) 
+#index the third object by name (using double brackets)
+
+rugby_club$club_dues <- c(110, 60)
+#index the third object by name using '$'
+```
+
+We can replace only one of the dues values. Let's say the club captains are considering discounting the fall semester dues by 50 USD to encourage more freshmen to join this year. To replace 110 with 60, we would write:
+```{r}
+rugby_club[[c(3, 1)]] <- 60 
+# note that here we are indexing the first element of the third object.
+```
+
+Remember that use of the double brackets here specifies the first value of the third object in the list.
+
+Let's modify the chess_club list to reflect new information our research has turned up. Currently, chess club members pay dues during the fall semester (50 USD), spring semester (20 USD), and during summer (15 USD) if they are staying on campus. Since few students stay on campus and snack costs are low, the club captain is reducing summer club dues to 5 USD.
+
+Here is the chess_club list:
+```{r}
+# $club_title
+# [1] "Chess Club"
+
+# $club_description
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# $club_dues
+# [1] 50 20 15
+
+# $club_meetings
+#              [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+Write code to replace the third element of club_dues to 5.
+
+Display the third element of club_dues in the chess_club list to check that the third element of club_dues has changed.
+practice:
+```{r}
+chess_club[[c(3, 3)]] <- 5
+chess_club[[c(3, 3)]]
+```
+
+
+
+7 of 10 · Appending Elements to Lists
+Learn
+As we continue to research clubs, we might acquire more information that we want to incorporate into our existing lists.
+
+Since one of the reasons we're looking to join clubs is to meet new friends, we'd like to join clubs that have lots of members who are also in their first year of university.
+
+As we researched the clubs we're interested in, we found some information on the number of first-, second-, third-, and fourth-year university students who participated in the club during fall and spring semesters last year.
+
+For the rugby club, we organized the information in the form of numeric data in a matrix named member_years_rugby:
+```{r}
+fall <- c(8, 12, 13, 2)
+spring <- c(6, 11, 14, 3)
+
+member_years_rugby <- rbind(fall, spring)
+colnames(member_years_rugby) <- c("first_yr", "second_yr", "third_yr", "fourth_yr")
+
+print(member_years_rugby)
+
+# output:
+#       first_yr second_yr third_yr fourth_yr
+# fall          8        12       13         2
+# spring        6        11       14         3
+```
+
+We'd like to add this matrix as an object to the rugby_club list, which currently contains three objects:
+```{r}
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 80 60
+```
+
+Let's add member_years_rugby as a fourth object of the list. To add an element to a list, we can specify the position we want the new element to occupy using double brackets:
+```{r}
+rugby_club[[4]] <- member_years_rugby
+
+# output:
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 80 60
+
+# [[4]]
+#       first_yr second_yr third_yr fourth_yr
+# fall          8        12       13         2
+# spring        6        11       14         3
+```
+
+Let's make three important points here:
+
+The new object we added is placed at the end of the rugby_club list.
+The object is numbered in the list and not named since we used position indexing.
+The object would overwrite an existing object if instead of specifying a new position, we specified an existing one (remember the previous screen where we modified an existing object in a list).
+As we've seen above, objects added to a list do not have names associated with them unless we specify them.
+
+We could assign a name to the object as we learned earlier in this lesson. If we want to append member_years_rugby to rugby_club and give it a name, we would write:
+```{r}
+rugby_club[["members_years_rugby"]]
+member_years_rugby
+```
+
+Let's clarify the process here:
+
+The new object is added at the end of the list without requiring us to indicate the current end of the list (contrary to when we use positions indexing like above).
+A name is assigned to this object in the list.
+We've researched chess club membership and found the following numbers of first-year members that joined during the fall and spring semesters last year:
+
+Fall Semester: 12
+Spring Semester: 15
+Let's add this information to our chess_club list.
+
+
+Practice
+Instruction:
+We have created a vector, first_years, that contains the number of first-year chess club members for last year's fall and spring semesters.
+
+Add the first_years vector as an object, of the same name, to the end of the chess_club list.
+
+Index chess_club to display the number of first-year students that participated in chess club during last year's spring semester.
+```{r}
+first_years <- c(12, 15)
+names(first_years) <- c("fall", "spring")
+# add code
+chess_club[["first_years"]] <- first_years
+chess_club$first_years[[2]]
+```
+
+
+8 of 10 · Removing Elements from a List
+Learn
+On this screen, we'll investigate how to remove elements from a list. Similar to removing elements from a vector by indexing them negatively, we can apply the same technique to remove elements from a list.
+
+Let's demonstrate this using the chess_club list.
+```{r}
+# $club_title
+# [1] "Chess Club"
+
+# $club_description
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# $club_dues
+# [1] 50 20  5
+
+# $club_meetings
+#              [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+We can remove values from a list by specifying their position preceded by a minus symbol (-) in square brackets ([]); not double square brackets. To remove the object in the second position of chess_club, we can write:
+```{r}
+chess_club[-2]
+# output:
+# $club_title
+# [1] "Chess Club"
+
+# $club_dues
+# [1] 50 20  5
+
+# $club_meetings
+# _             [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+We can also remove multiple objects from a list by specifying more than one position preceded by a minus symbol (-) in square brackets ([]). To remove elements in the first and third position from the chess_club list, we would write:
+```{r}
+chess_club[c(-1, -3)]
+# $club_description
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# $club_meetings
+# _             [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"
+```
+
+PRACTICE
+The chess_club list is available from previous screens. Here is its content:
+```{r}
+# $club_title
+# [1] "Chess Club"
+
+# $club_description
+# [1] "Meets two nights a week for members to play chess. Snacks are provided."
+
+# $club_dues
+# [1] 50 20  5
+
+# $club_meetings
+#              [,1]      [,2]       
+# meeting_days  "Monday"  "Wednesday"
+# meeting_times "6:00 pm" "8:00 pm"  
+
+# $first_years
+#  fall spring 
+#    12     15
+```
+
+Write code to remove the first object of the list, chess_club.
+
+Store the result in the variable chess_club_without_1.
+Write code to remove the object at the third and fourth positions of the chess_club list.
+
+Store the result in the variable chess_club_without_34.
+```{r}
+chess_club <- list("club_title" = c("Chess Club"), 
+                   "club_description" = c("Meets two nights a week for members to play chess. Snacks are provided."), 
+                   "club_dues" = c(50, 20, 15), 
+                   "club_meetings" = rbind(c("Monday", "Wednesday"),  c("6:00 pm", "8:00 pm")),
+                   "first_years" = c("fall" = 12, "spring" = 15))
+
+# add code
+
+chess_club_without_1 <- chess_club[-1]
+chess_club_without_34 <- chess_club[c(-3, -4)]
+```
+
+
+9 of 10 · Combining Lists
+Learn
+In this lesson, we've been creating lists of data for several clubs:
+
+rugby_club
+ballroom_dancing
+chess_club
+Perhaps we'd like to combine them into a single list.
+
+The syntax for combining multiple lists is similar to that of combining vectors. To combine the rugby_club and ballroom_dancing lists into a new list called university_club_data, we can use the c() function:
+```{r}
+university_club_data <- c(rugby_club, ballroom_dancing)
+# output:
+# $club_title
+# [1] "Rugby Club"
+
+# $club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $club_dues
+# [1] 80 60
+
+# $member_years_rugby
+#       first_yr second_yr third_yr fourth_yr
+# fall          8        12       13         2
+# spring        6        11       14         3
+
+# $club_title
+# [1] "Ballroom Dancing Club"
+
+# $club_description
+# [1] "Practices waltz, salsa, and tango dancing for competitions with local university dance teams"
+
+# $club_dues
+# [1] 150
+```
+
+Combining lists using c() appends lists to one another, end-to-end, to create a single list. We can use it to combine as many lists as necessary.
+
+The university_club_data list is confusing because some of the elements, like club_description, have the same name. We need a way to combine lists that preserve the organization of each list.
+
+Recall that lists can contain any type of data object, including other lists. Instead of combining elements of the three lists into a single list as we did using c(), we can use the list() function to create a new list of lists. Let's create a list of lists, university_club_list, to illustrate how this works.
+
+Recall the syntax for creating a list of named objects from earlier in this lesson:
+```{r}
+universty_club_list <- list(rugby_club = rugby_club, ballroom_dancing = ballroom_dancing)
+# output:
+# $rugby_club
+# $rugby_club$club_title
+# [1] "Rugby Club"
+
+# $rugby_club$club_description
+# [1] "Plays matches against clubs from local universities"
+
+# $rugby_club$club_dues
+# [1] 80 60
+
+# $rugby_club[[4]]
+#       first_yr second_yr third_yr fourth_yr
+# fall          8        12       13         2
+# spring        6        11       14         3
+
+# $rugby_club$member_years_rugby
+#       first_yr second_yr third_yr fourth_yr
+# fall          8        12       13         2
+# spring        6        11       14         3
+
+
+# $ballroom_dancing
+# $ballroom_dancing$club_title
+# [1] "Ballroom Dancing Club"
+
+# $ballroom_dancing$club_description
+# [1] "Practices waltz, salsa, and tango dancing for competitions with local university dance teams"
+
+# $ballroom_dancing$club_dues
+# [1] 150
+```
+
+Notice that the name of each object in university_club_list follows the name of the list it belongs to (either rugby_club or ballroom_dancing), making it much clearer and organized.
+
+Creating a list of lists will be a technique we use when we want to perform the same operation on multiple lists at the same time in future courses.
+
+For now, let's practice by creating a list of the three lists of club data we've worked with in this lesson.
+```{r}
+university_clubs <- list(rugby_club = rugby_club, ballroom_dancing = ballroom_dancing, chess_club = chess_club)
+```
+
+10 of 10 · Next Steps
 ```{r}
