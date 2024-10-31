@@ -2552,4 +2552,243 @@ Control Flow in R
 Learn
 So far in our course, we've worked under the assumption that each of the decisions in our tree had only two branches: one corresponding to TRUE and another to FALSE. There are plenty occasions where we have more than two since some decisions don't boil down to a "Yes" vs "No". Let's expand our apple example to include a case with three branches.
 
+R provides a way to handle more than two branches in an if statement with the else if keyword. The else if keyword provides another code block to use in an if statement, and we can have as many as we see fit. An example follows:
 ```{r}
+if (color == "Yellow") {
+  purchase <- TRUE
+} else if (color == "Green") {
+  purchase <- FALSE
+} else if (color == "Red") {
+  purchase <- FALSE
+} else {
+  purchase <- FALSE
+}
+```
+
+The above code recreates the three-branched illustration. Each potential apple color gets its own branch and associated code block. The else code block helps cover us for any other potential color that we might have missed in the diagram. Without the else keyword, the purchase variable never gets assigned a value.
+
+Using the above code as a model, get some practice creating multi-branch if statements. 
+
+PRACTICE
+We are given a variable that contains information on how many words we can write per minute: wpm. Using this variable, create a new variable classification that describes our pace with a single word.
+- If wpm is less than 58, assign "Below Average" to classification.
+- If wpm is greater than 82, assign "Above Average" to classification.
+- Otherwise, assign "Average" to classification.
+```{r}
+wpm <- 70
+classification <- if (wpm < 58) {
+    classification <- "Below Average"
+    } else if (wpm > 82) {
+    classification <- "Above Average"
+    } else {
+    classification <- "Average"
+    }
+
+
+# output:
+# classification
+# character(character)
+# [1] "Average"
+
+# wpm
+# numeric(double)
+# [1] 70
+```
+
+Control Flow in R
+6 of 10 · Using Multiple Conditions
+Learn
+As of now, we have only been using one condition in our if statements. There will certainly be times where you'll need to apply more than one condition to a branch to be more specific, catch more detailed cases, etc. In order to use multiple conditions, you'll need to familiarize yourself with the concept of compound conditions. As their name suggests, compound conditions are higher level conditions that have multiple parts to them. Let's develop our understanding on compound conditions using the examples below:
+```{r}
+x <- 7
+x > 5 && x < 10
+```
+
+The above compound condition uses the && (double-ampersand) symbol to combine the conditions x > 5 and x < 10 together. We would read the && as "and". That is to say, the compound condition is asking, "Is x greater than 5 and is x less than 10?" The variable x must satisfy both of these conditions for the compound condition to evaluate to TRUE. In this case, x satisfies both of the conditions, so this should evaluate to TRUE.
+```{r}
+y <- 7
+y < 5 || y > 10
+```
+
+Here, the compound condition is using the || (double pipe, not to be confused with %>%). The || character is read as "or", so the compound condition overall is asking, "Is y either less than 5 or greater than 10?". Unlike && where all the conditions need to be met for the compound condition to be TRUE, || only asks that at least one of them be TRUE. Compound conditions can be used in if statements just like regular conditions since they ultimately evaluate to either TRUE or FALSE.
+
+Before we leave you to the practice problem, we must note an important caveat to using if statements. In general, && and || make conditions more specific, which means they require more detail to satisfy. R reads if statements from top-to-bottom and will stop at the first condition that is satisfied. Even if another condition might be satisfied below, R will use the first code block where the condition is TRUE. Because of this, it is best practice to put your more specific conditions higher in your if statements so that they are not accidentally missed.
+
+
+PRACTICE
+
+We are given the wpm variable again, but instead of classifying with 3 levels this time, we want to categorize typing rates as either "Average" and "Not Average". Using wpm, create a new variable classification that meets the following conditions:
+If wpm is between than 68 and 82, assign "Average" to classification.
+Otherwise, assign "Not Average" to classification
+```{r}
+wpm <- 70
+classification <- if (wpm >= 68 && wpm <= 82) {
+  classification <- "Average"
+} else {
+  classification <- "Not Average"
+}
+    
+# output:
+# wpm
+# numeric(double)
+# [1] 70
+
+# classification
+# character(character)
+# [1] "Average"
+```
+
+Control Flow in R
+7 of 10 · A Technical Note on Multiple Conditions
+Learn
+In the last screen, we learned how to incorporate multiple conditions into an if statement using && and ||. Since we also know about if_else() function, it's tempting to think that we can use && and || to use multiple conditions in the if_else() function. Unfortunately, this isn't the case. We'll demonstrate in a code example below:
+```{r}
+a <- 1:3
+b <- 4:6
+
+c <- if_else(a > 2  && b > 5, TRUE, FALSE)
+```
+Looking at the above code, you might expect the variable c to contain multiple values that correspond to the multiple comparison a > 2 && b > 5. On inspection, we see that this is not the case:
+```{r}
+# output:
+# c
+
+# [1] FALSE
+```
+
+c only contains one value! Why is this? The reason behind this is actually the behavior of the && and || operators themselves. To summarize why only one value appears in c, it boils down to the fact that && and || are only expecting single values to be used in the multiple comparison. In this case, the multiple comparison a > 2 && b > 5 is only using the first values from the vectors a and b, which are 1 and 4. The other values in a and b are not used at all.
+
+The if_else() function is designed to be used with multiple values, like with a vector or a column in a tibble. Using it with && or || will produce unexpected answers because they are designed to only be used with single values. Thankfully, we do not need to change the code much in order to fix it. Instead of the double && and ||, we only need to use & and |.
+
+```{r}
+# Incorrect usage
+c <- if_else(a > 2 && b > 5, TRUE, FALSE)
+
+# Correct usage
+d <- if_else(a > 2 & b > 5, TRUE, FALSE)
+
+d
+# [1] FALSE FALSE  TRUE
+```
+
+The vector d uses & instead of && and produces the output we originally expected. The same logic would also apply to | vs ||. So, if you plan to use multiple conditions in an if_else() function, you must use & or | to do so. The explanation for this is out of scope for this lesson, but we will come back to it later.
+
+
+
+Control Flow in R
+8 of 10 · The case_when() Function
+Learn
+On the last screen, we learned that we could use the else if keyword to incorporate more than two branches into an if statement. On this screen, we will learn about a new function that will simplify how we handle 2+ branches in an if statement.
+
+We know about the if_else() function, but it works best with simpler conditions that evaluate to TRUE or FALSE. We could potentially nest if_else() functions in other functions, but this could make for hard-to-read code. There is a more elegant solution in the case_when() function.
+
+You can think of the case_when() function as an extension of the if_else() function, which gives room for more branches. We'll demonstrate a use case below with the recent_grads data:
+```{r}
+new_recent_grads <- recent_grads %>%
+  mutate(
+    size_classification = case_when(
+      Total < 2000 ~ "Small",
+      Total > 20000 ~ "Large",
+      TRUE ~ "Medium"
+    )
+  )
+```
+
+
+Within the case_when() function, we have a series of conditions and assignments. The first example is Total < 2000 ~ "Small". The condition Total < 2000 is separated from the assignment "Small" by the character ~ (pronounced "til-deh"). You can think of each of these lines as shortened if branches. The last line, TRUE ~ "Medium", acts as a catch-all in case the Total amount does not fall into either of the conditions above. Another way of interpreting the TRUE ~ "Medium" line is that it is a safety net: if the Total satisfies neither the Total < 2000 or the Total > 20000 condition, then it will be "caught" by the TRUE ~ "Medium" line.
+
+The combination of if_else() and case_when() will help cover most situations where you will need to use the if statement on your data. After finishing this exercise, we'll finish off our overview of if statements.
+
+PRACTICE
+Use the case_when() function to create a new column in the recent_grads dataset called unemployment_level. This new column should have the following:
+- If Unemployment_rate is less than 5%, unemployment_level should be "Low"
+- Between 5% and less than 10%: "Moderate"
+- Greater than or equal to 10%: "High"
+- Assign your tibble with the new column to the variable new_recent_grads.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+new_recent_grads <- recent_grads %>% 
+  mutate(
+    unemployment_level = case_when(
+      Unemployment_rate < 0.05 ~ "Low",
+      Unemployment_rate >= 0.05 & Unemployment_rate < 0.1 ~ "Moderate",
+      Unemployment_rate >= 0.1 ~ "High"
+    )
+  )
+```
+
+
+Control Flow in R
+9 of 10 · Other Useful Comparison Operators
+Learn
+You've learned about the if statement, if_else() and case_when() functions that enable you to use control flow to do some data cleaning. Before we move onto another type of control flow, we will wrap up if statements by covering some other useful comparison operators.
+
+Currently, we know how to do comparisons on equality and how to determine whether or not one value is greater or smaller than another (==, !=, >, >=, <, and <=). One task that these comparison operators have trouble with is identifying membership in a group. That is to say, given a value, is it present in a collection of values like a vector?
+
+Say that we are performing an analysis on the recent_grads data that involves engineering majors, but only on a particular subset of them. It will be important for us to filter the dataset to just these majors, so we could do something like the following:
+```{r}
+recent_grads %>% 
+  filter(
+    Major == "AEROSPACE ENGINEERING" | Major == "BIOMEDICAL ENGINEERING" | Major == "CHEMICAL ENGINEERING"
+  )
+```
+
+The above compound condition let's us grab these three majors, but there are plenty more majors that we need for the analysis. As we add more, the compound condition will become longer and longer. There is a shorthand way to do this through a membership test. The below code performs the same operation as the one above.
+
+```{r}
+recent_grads %>% 
+  filter(
+    Major %in% c("AEROSPACE ENGINEERING", "BIOMEDICAL ENGINEERING", "CHEMICAL ENGINEERING")
+  )
+```
+
+Here, we collect all of the three engineering majors and put them into a vector. Then, we use the %in% comparison operator to see if the Major column contains any of these values. If it is in the vector of engineering majors, then this will evaluate to TRUE. Using %in% also makes it much more apparent what the code is doing. Instead of having long streaks of ||, the %in% operator makes it immediately clear that we are testing for membership in a vector. It's important to note that the entire expression Major %in% c("AEROSPACE ENGINEERING", "BIOMEDICAL ENGINEERING", "CHEMICAL ENGINEERING") is a comparison operator.
+
+For the sake of teaching, let's say that we actually wanted to exclude these majors from the analysis. We could reverse the filtering by inverting the comparison operator. Inverting a logical means to change it to its opposite. TRUE inverts to FALSE and vice versa. We can invert the %in% operator to exclude these majors like below:
+```{r}
+recent_grads %>% 
+  filter(
+    !(Major %in% c("AEROSPACE ENGINEERING", "BIOMEDICAL ENGINEERING", "CHEMICAL ENGINEERING"))
+  )
+```
+
+Here, we've wrapped the entire %in% operation in parentheses and prefixed with an exclamation mark ! (pronounced not in programming) at the beginning. By prefixing the comparison statement with a !, the resulting boolean is inverted. Now, any rows that have these three majors will evaluate to FALSE and will be filtered out. You can prefix any comparison operator with ! if you want to invert it.
+
+The %in% operator and logical inversion will help you be more flexible and succinct in your data cleaning and analysis. Take some time to practice using them on the recent_grads data before moving on.
+
+
+PRACTICE
+We want to conduct an analysis on all of the majors with "Arts" in its name. In the context of the data, these are rows where Major_category is either "Arts" or "Humanities & Liberal Arts". Filter the recent_grads data and assign this new tibble to the variable arts_grads.
+We want to conduct an analysis on all of the majors that are not "Engineering" or "Physical Sciences". Assign this new tibble to the variable non_engineering_science_grads.
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+# no 1
+arts_grads <- recent_grads %>% 
+  filter(
+    Major_category %in% c("Arts", "Humanities & Liberal Arts")
+  )
+
+# alternative code:
+arts_grads <- recent_grads %>% 
+  filter(
+    Major_category == "Arts" | Major_category == "Humanities & Liberal Arts"
+  )
+
+# alternative code:
+arts_grads <- recent_grads %>% 
+  filter(
+    Major_category %in% c("Arts") | Major_category %in% c("Humanities & Liberal Arts")
+  )
+
+# no 2
+non_engineering_science_grads <- recent_grads %>% 
+  filter(
+    !(Major_category %in% c("Engineering", "Physical Sciences"))
+  )
+```
+
+Control Flow in R
+10 of 10 · Next Steps
