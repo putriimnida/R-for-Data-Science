@@ -2406,4 +2406,150 @@ highest_median <- medians %>% max
 Dataframes in R
 10 of 10 · Next Steps
 
+
+Control Flow in R
+1 of 10 · Introduction
+Learn
+In the last two lessons, you were introduced to R and the tidyverse way of programming. R is one of the most widely used programming languages in data analysis, and you've started to produce readable, analysis-ready code. We've learned about the basic data types and data structures in R, which provide you with necessary skills to import datasets into R, so that you can start manipulating them. These are excellent first steps in the journey to be a career-ready analyst.
+
+Developing yourself as a programmer and analyst means being exposed to more tools that you can use in future data analysis tasks. These tools can come in the form of mastering programming concepts or applying functions that may perform a specific task. As you master more tools, you will be able to tackle more analysis tasks and be more flexible as a programmer. A good analyst knows the basic functions needed to solve a problem, but a great one can come up with multiple ways to approach it. In this course, we will learn more programming concepts and functions that will allow us to tackle more problems.
+
+In this lesson specifically, we'll tackle the concept of control flow and see how it is used in a data analysis context. Control flow is just a technical term for something we do in everyday life: decision making. Imagine going to a supermarket to get some fruit for yourself. As you walk into the produce section, you find your favorite fruit: apples. When picking fruit to buy, we normally want to buy apples that look juicy and healthy and avoid fruit that looks rotten or bruised. As we pick up apples and inspect them, we are actually using control flow.
+
+We are using different characteristics of the apples to guide our purchasing. This concept of guiding decisions also appears in programming, where we may need to use different code for different situations. This is the essence of control flow in programming in general. On the next screen, we will prepare ourselves on how to understand and use control flow in R.
+
+
+Control Flow in R
+2 of 10 · Review of Comparison Operators
+Learn
+On the last screen, we imagined a sort of decision tree on how to make a decision on buying an apple from the supermarket
+
+In order to move through this decision tree, we need to answer either "Yes" or "No" to each question. A series of "Yes" answers will lead us through the decision process to buy a given apple. As you might recall from our Introduction to R course, R has a dedicated data type to represent the idea of "Yes" and "No: the logical data type, otherwise known as TRUE and FALSE.
+
+In order to use control flow, we need to create statements that will turn out to be either TRUE or FALSE. In the apple example, the questions "Does the apple look fresh?" and "Is the apple big enough?" are the statements that yield TRUE ("Yes") or FALSE ("No"). In R, the most fundamental way to evaluate something as TRUE or FALSE is through the use of comparison operators. In one of our previous lessons, we had learned about Tibbles and we were introduced to comparison operators that allowed us to filter a tibble's rows based on a given comparison. The filter() function kept all rows where the comparison operator was TRUE for the row.
+
+The filter() function applies the comparison operator to an entire column, but we can also use comparison operators for single values. Take for example the statement x < 5, where x can be some variable that we assign. If x were in fact less than 5, then the statement x < 5 would evaluate to TRUE and FALSE otherwise.
+```{r}
+x = 4
+x < 5
+# output:
+# [1] TRUE
+
+y = 6
+y < 5
+# output:
+# [1] FALSE
+```
+
+
+Recall that we learned six essential comparison operators while learning how to work with tibbles. We'll use them more throughout this lesson:
+
+== means equality. The statement x == a means "Does the value of x equal the value of a?"
+!=: means "not equal". The statement x != b means "Does the value of x not equal the value of b?"
+<: means "less than". The statement x < c means "Is the value of x less than the value of c?"
+<=: means "less than or equal". The statement x <= d means "Is the value of x less or equal to the value of d?"
+>: means "greater than". The statement x > e means "Is the value of x greater than the value of e?"
+>=: means "greater than or equal". The statement x >= f means "Is the value of x greater than or equal to the value of f?"
+
+We'll learn more comparison operators as we progress through the course, but these six are crucial to know as we move to our first example of control flow: the if statement. You can use this screen to practice using these different comparison operators.
+
+
+
+Control Flow in R
+3 of 10 · The if statement
+Learn
+On the last screen, we did a quick review of comparison operators. They provide us with ways to create R statements that evaluate either to TRUE or FALSE, in the same way that "Yes" and "No" allowed us to move through the decision tree of purchasing an apple. Here, we will learn how to create this branching path through the if statement.
+
+We show an example case of an if statement below:
+
+```{r}
+major <- "Engineer"
+if (major == "Chemistry") {
+  print("This person majored in Chemistry.")
+} else {
+  print("This person did not major in Chemistry.")
+}
+# output:
+# [1] "This person did not major in Chemistry."
+```
+
+When we start running code, R starts with the top line: major <- "Engineer". After storing that string to the variable major, R will see the if statement and will check the condition major == "Chemistry". Since major is "Engineer", this comparison operator will evaluate to FALSE. Since the condition is false, R will skip the code that will print "This person majored in Chemistry.", and it will jump to the second statement that prints "This person did not major in Chemistry."
+
+Using a slightly different formatting, the if statement has this particular structure:
+```{r}
+if (condition) { 
+    # If condition is true, run this code 
+} else { # If condition is false, then, run this code 
+}
+```
+
+The essential characteristic of the if statement is that it helps us create a branching path in our code. Both the if and the else keywords are followed by curly brackets { }, which define code blocks. Each of the code blocks represent one of the paths shown in the diagram. R does not run both, and it uses the comparison operator to decide which code block to run.
+
+
+PRACTICE
+
+The recent_grads data is available to us. Using this data:
+Write an if statement that creates a new variable data_size. If the number of rows in recent_grads is greater than 1000, then data_size should be equal to "Large". If not, then data_size should be equal to "Small".
+```{r}
+library(tidyverse)
+# Supply col_types = cols() to suppress column specification output
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+if (nrow(recent_grads) > 1000) {
+  data_size <- "Large"
+} else {
+  data_size <- "Small"
+}
+```
+
+
+
+Control Flow in R
+4 of 10 · The if_else() Function
+Learn
+On the last screen, we learned about the if statement and its ability to create branching paths in our code. A single if statement is useful for handling one condition, but it's not useful in cases where there are a lot of values that need comparison.
+
+For example, let's say that we want to create a new column in the recent_grads dataset that helps us to know whether or not a major was associated with Engineering. We have the Major_category column that contains information on the majors, but we need some way to vectorize the if statement to all of the values in this column. A single if statement won't be able to handle this.
+
+Thankfully, the dplyr library within the tidyverse has such a function: the if_else() function. Here's an example of how it works:
+```{r}
+new_recent_grads <- recent_grads %>%
+  mutate(
+    is_engineering = if_else(Major_category == "Engineering", TRUE, FALSE)
+  )
+```
+
+In the above code, we are creating a new column is_engineering based on the values of the Major_category column. For each row, the if_else() function takes the value in Major_category and checks if it is equal to the string "Engineering". If that row's Major_category value is "Engineering", then the corresponding "is_engineering" value will be TRUE. If not, then it will be FALSE. The if_else() function takes that single comparison operator Major_category == "Engineering" and vectorizes it.
+
+To effectively use the if_else() function, you need to provide three arguments:
+
+A statement (e.g. comparison operator) that evaluates to TRUE or FALSE. Instead of passing it a single value, you need to give it a specific column in the data.
+The value that the new column should take if the comparison operator is TRUE. In this case, we also want the column to be TRUE, but it can be any single value that we would want it to be.
+The value that the new column should take if the comparison operator is FALSE. Like the second argument, it can be anything you specify.
+The if_else() function is a potent function to use in data analysis. It allows us to use if statements and apply them to our data as a whole in a single line. Take some time to practice using the function before moving forward.
+
+
+PRACTICE
+Using the recent_grads data:
+
+Create a new column median_level in the recent_grads data. If Median is greater than 50000, then median_level should take the value "Above Average". If not, then median_level should take the value "Below Average".
+Create another new column called greater_prop_gender. If the value in the Women column is greater than the Men column, then greater_prop_gender should be "Women". If not, then greater_prop_gender should be "Men".
+The tibble with these two columns should be assigned to a new tibble called new_recent_grads.
+
+```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+new_recent_grads <- recent_grads %>%
+  mutate(
+    median_level = if_else(Median > 50000, "Above Average", "Below Average"),
+    greater_prop_gender = if_else(Women > Men, "Women", "Men")
+  )
+```
+
+Control Flow in R
+5 of 10 · Moving Beyond Two Branches
+Learn
+So far in our course, we've worked under the assumption that each of the decisions in our tree had only two branches: one corresponding to TRUE and another to FALSE. There are plenty occasions where we have more than two since some decisions don't boil down to a "Yes" vs "No". Let's expand our apple example to include a case with three branches.
+
 ```{r}
