@@ -2792,3 +2792,66 @@ non_engineering_science_grads <- recent_grads %>%
 
 Control Flow in R
 10 of 10 · Next Steps
+
+
+Iterations in R
+1 of 9 · Introduction
+Learn
+In the last lesson, we learned about control flow. Control flow gives us the ability to tell R what specific code it should run given a condition. What's special about control flow is that it actually changes how R reads through your code. When we are not using control flow, R reads your code much like a to-do list. R reads the first line, performs the code there, moves to the second line, and repeats until it's read through all of the code.
+
+You might recall that control flow creates a branching path in your code. So, as soon as R encounters an if statement in your code, it looks at the condition and then decides which branch, or line of code it should jump to, before continuing to read down the code.
+
+In this lesson, we'll discuss another way that we can change how R reads through your code, like instances where you need to repeat the same code multiple times. For example, we saw this with the if_else() function that repeated the same comparison operator on each row of the recent_grads data set. We're going to explore this idea more while going through this lesson. This repetition of code is called iteration, and it is a key and fundamental concept to grasp and master in programming. After you get through the exercises, you will have a solid understanding of how to use iteration in your own programming.
+
+
+Iterations in R
+2 of 9 · Motivation for Learning Iteration
+Learn
+Learning iteration is important because using it correctly can save us time and mindless effort. To demonstrate this, we'll consider a real-life example. Imagine that you are hired as an analyst for a company that sells programming textbooks, and you are now responsible for considering a range of prices to set for a new textbook. To demonstrate your analytical skills, you'll aim to choose the one that will create the most profit for your new company. Let's say the range of prices are as follows:
+```{r}
+prices <- c(10, 20, 30, 40, 50)
+
+```
+
+The marketing team tells you that if the price is too low, the company does not reap enough profit from each book, and if it's too high, then not enough people will buy the books. They give you a formula that descibes how much profit you'll get based on the price:
+
+
+
+With this convenient equation, we can calculate the profit for each price. However, we only have the prices, so how should we calculate the profits from each of them?
+One way is to just calculate everything by hand:
+```{r}
+profits <- c(
+  -1 * 10^2 + 60 * 10,
+  -1 * 20^2 + 60 * 20,
+  -1 * 30^2 + 60 * 30,
+  -1 * 40^2 + 60 * 40,
+  -1 * 50^2 + 60 * 50)
+
+profits
+# [1] 500 800 900 800 500
+```
+
+
+That certainly does the job, but notice that we've essentially written out the same formula five times, only changing a small portion of it each time to represent a different price. In this case, we only have five prices, but what if we had 20? 100? Writing out such a long list of numbers that essentially perform the same operation would take a lot of effort, just to do one type of calculation. This is NOT efficient.
+
+Iteration comes in handy here. Instead of having to write the same equation five times, we could write it just once using iteration. All of the prices would go through this calculation, and we would store the result somewhere else.
+```{r}
+# Starting with the first price:
+    # Calculate the profit based on the price
+    # Store this first profit in another vector
+    # Now that the calculation on the first price is done, move to the second one
+    # Repeat until all of the profits have been calculated
+```
+
+In essence, iteration allows us to repeat code many times without having to type it out again and again. This allows us to write less code (which means less possibility for mistakes) and it can express our intent better. In R, there are two types of iteration that we will cover: The for and while loops.
+
+
+Iterations in R
+3 of 9 · The for Loop
+
+```{r}
+
+```
+
+
+
