@@ -2846,12 +2846,88 @@ Iteration comes in handy here. Instead of having to write the same equation five
 In essence, iteration allows us to repeat code many times without having to type it out again and again. This allows us to write less code (which means less possibility for mistakes) and it can express our intent better. In R, there are two types of iteration that we will cover: The for and while loops.
 
 
+
 Iterations in R
 3 of 9 · The for Loop
 
+Learn
+Now that you understand why iteration is useful, it's time to see how to use it in R. Iteration in R means repeating code again using the elements of a vector. There are two ways that R lets us use iteration: a for loop and a while loop. On this screen, we'll learn how to use a for loop.
+
+On the last screen, we started an example problem with a vector of prices, for which we want to calculate a vector of profits. We know how to calculate profit given the price, but our problem is that we want to simplify our code so that we don't have to repeat ourselves too much. We can use a for loop to solve this problem. We'll show an example below, and then we'll dissect it:
+
 ```{r}
+prices <- c(10, 20, 30, 40, 50)
+profits <- c()
+
+for (price in prices) {
+  calc <- -1 * price^2 + 60 * price
+  profits <- c(profits, calc)
+}
+
+profits
+# --- output --- #
+# [1] 500 800 900 800 500
 
 ```
 
+The code above follows a specific structure:
 
+1. The first things we see are the prices vector and a new profits vector.
+The prices vector is what we originally had, but now we have a profits vector that has no elements in it. This empty vector will act as a storage for all of the profit calculations.
+2. Afterwards, we see the for keyword being used followed by an expression in the parentheses.
+The price in prices expression tells R that we want to iterate over all of the elements in the prices vector.
+The price variable is special because it represents a single element in the prices vector, what we call a placeholder variable.
+3. When the for loop first starts, price is the first element in prices, which is 10.
+As we've mentioned, there is a code chunk denoted by the curly brackets {} that follows the for keyword. This code chunk is what will be repeated for every price that's in the prices vector.
+Within the code chunk itself, we have a calc variable that actually uses the profit calculation, based on the current price placeholder.
+After the calculation is done, it is appended, or added, to the profits vector.
+4. After all of the calculation in the code chunk is done when price = 10, the loop will go back to the top and price will become the second element in prices: 20. This process repeats until all of the elements in prices have been exhausted.
+
+
+The end result is exactly what we got from the last screen, without having to type out the calculation one by one. Instead of having to repeat ourselves, we could use the for loop to write the calculation once and just change out what price is being used.
+
+
+To make our own for loop, we would need the following:
+1. A vector that we want to iterate over (e.g. prices). This can also be called an iterable.
+2. The for keyword and a placeholder variable to represent a single value in the iterable (e.g. price).
+Note that we can actually name the placeholder variable anything we want. It could be p or pr, but it is often best practice to give it a name that makes it immediately clear what it is supposed to represent. Whatever you choose as the placeholder variable, it should be consistent within the following code chunk.
+3. A code chunk that we want repeated for each element in the iterable (e.g. the profit calculation and appending to profits)
+
+This procedure can also be applied when iterating through columns of a tibble using the following method:
+```{r}
+# create a sample tibble
+library(tibble)
+df <- tibble(a = 1:5, b = letters[1:5], c = c(TRUE, FALSE, FALSE, TRUE, TRUE))
+
+# iterate through columns using a for loop
+for (col_name in names(df)) {
+  col_data <- df[[col_name]]
+  # do something with the column data
+  print(col_data)
+}
+
+# output:
+# [1] 1 2 3 4 5
+# [1] "a" "b" "c" "d" "e"
+# [1]  TRUE FALSE FALSE  TRUE  TRUE
+```
+
+PRACTICE:
+You are given a vector of measurements that are in terms of millimeters (mm). For this exercise, we actually want to convert all of these measurements in terms of meters (m). For reference, 1 meters is the same as 1000 millimeters.
+
+1. Using a for loop, create and append to a new vector called meter_measurements that contains the values converted to meters.
+```{r}
+millimeter_measurements <- c(10000, 54900, 94312, 49185, 2100)
+meter_measurements <- c()
+
+for (milimeter in millimeter_measurements) {
+    calc <- milimeter / 1000
+    meter_measurements <- c(meter_measurements, calc)
+}
+
+meter_measurements
+
+# --- output --- #
+# [1] 10.000 54.900 94.312 49.185  2.100
+```
 
