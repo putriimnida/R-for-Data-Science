@@ -2931,3 +2931,304 @@ meter_measurements
 # [1] 10.000 54.900 94.312 49.185  2.100
 ```
 
+
+
+Iterations in R
+4 of 9 · Using Indexes: Another Way To Write for Loops
+Learn
+On the last screen, we learned how to make our own for loop. For the most part, writing for loops in this way satisfies most of the situations that you'll need. There is another way of writing for loops that work exactly as in the last screen, but differs in how we get the elements of the vectors.
+
+On the last screen, the for loop was written like below:
+```{r}
+prices <- c(10, 20, 30, 40, 50)
+profits <- c()
+
+for (price in prices) {
+  calc <- -1 * price^2 + 60 * price
+  profits <- c(profits, calc)
+}
+```
+
+In the above example, the placeholder variable price uses values directly from the prices vector. The alternative way to use for loops is to take advantge of indexing. Recall that we can access the elements of a vector directly using indexes, which represent their place in the vector. Instead of iterating through the actual elements of the iterable, we can iterate through the positions (indices) instead. We can rewrite the above for loop below:
+```{r}
+prices <- c(10, 20, 30, 40, 50) # create a vector of prices
+profits <- integer(length(prices)) # initialize a vector of profits with same number of elements as proces, filled with zeros
+
+indices <- 1:length(prices) # generate a sequence of indices from 1 to the number of elements in the prices vector
+
+# start a for loop, iterating over each index in the indices vector
+for (i in indices) {
+  calc <- -1 * prices[i]^2 + 60 * prices[i] # calculate the profit for the current price at index i
+  profits[i] <- calc #Add the calculated profit to the profits vector using the c() function.
+  
+}
+
+profits
+
+# --- output --- #
+# [1] 500 800 900 800 500
+```
+
+We've added comments to guide you through each line of code step by step. Both for loops perform exactly the same function, but the index-based presentation uses the position numbers to access each price. With prices[1] getting the first price, prices[2] gets the second price, and so on.
+
+When we iterate over indices, we need to construct a vector of zeroes instead of an empty vector. If we start with an empty vector, then trying to access profits through an index wouldn't work. To create this vector of zeroes, we use the integer() function and length() function. Using these two functions together creates a vector of zeroes that is the same length as the prices vector. For every index, we are reassigning the zero with the result of the calculation calc. This is what you see with profits[i] <- calc.
+
+In general, looping through indices makes your code less readable compared to looping through elements. "Less readable" really means that it's less apparent what your code is doing. The trade-off is that you have more flexibility to incorporate more data (ie more vectors) into the for loop. In this case, we're only dealing with prices, so it's not as useful here but it's important that you are aware of this other style of writing for loops.
+
+PRACTICE
+We have provided the same measurements as on the last screen. Rewrite your for loop to use indices instead of the actual elements of prices.
+
+Using a for loop, create and append to a new vector called meter_measurements that contains the converted millimeter values.
+For answer checking purposes, make sure to use i as your placeholder variable.
+```{r}
+millimeter_measurements <- c(10000, 54900, 94312, 49185, 2100)
+meter_measurements <- integer(length(millimeter_measurements))
+
+indices <- 1:length(millimeter_measurements)
+
+for (i in indices) {
+  calc <- millimeter_measurements[i] / 1000
+  meter_measurements[i] <- calc
+}
+
+meter_measurements
+# --- output --- #
+# [1] 10.000 54.900 94.312 49.185  2.100
+```
+
+
+
+Iterations in R
+5 of 9 · Understanding The while Loop
+Learn
+
+We've covered the for loop in great detail in this lesson because it's the loop that you'll deal with the most practically. The second type of loop is still useful to know, but it's better suited to analytical situations that are outside the scope of this course. This second loop type is called a while loop.
+
+To distinguish between these two loops, it's useful to think of a for loop as dealing with a chore list. The idea being that you have a set amount of chores to finish, and once you do all of your chores, you're done. The key here is that there is a set amount of items that we need to loop through in a for loop.
+
+On the other hand, a while loop is like trying to reach a milestone, like raising a target amount of money for a charity event. For charity events, you typically perform and do things to raise money for your cause, like running laps or giving services to people. You do these tasks to raise money until you reach your target goal, and it's not clear from the beginning how many tasks you need to do to reach the goal. That's the key idea behind a while loop: repeat some actions (read: a code chunk) until a condition or goal is met.
+
+
+
+
+
+
+Iterations in R
+6 of 9 · Understanding while Loops with Examples
+Learn
+Unlike their counterparts, while loops require more preparation to use. If this preparation is not done, then we could run into serious problems with our loop. We provide a small example of a while loop that counts from 1 to 5 below:
+
+```{r}
+# Initialize the counter to start at 1
+counter <- 1
+
+# The loop should run as long as the counter is less than or equal to 5
+while (counter <= 5) {
+  # Print the current value of the counter
+  print(counter)
+
+  # Increment the counter by 1
+  counter <- counter + 1
+}
+```
+In the example above, we start with a counter variable set to 1. The while loop then begins to check if counter is less than or equal to 5. If true, it prints the counter's current value. Then, it adds 1 to the counter. The loop runs until counter is greater than 5, then stops.
+
+Let's look at another example with a bit of logical reasoning:
+```{r}
+nums <- 1:10    # Vector of numbers from 1 to 10
+is_condition_met <- FALSE   # Condition flag, starts as FALSE
+i <- 1   # Index to access elements in nums
+
+# Loop execution
+while (!is_condition_met) {
+
+  current_num <- nums[i]    # Grab a number using the index
+  is_condition_met <- current_num > 7 # Update the condition with a logical test
+  i = i + 1 # Increase the index for the next iteration
+}
+
+# The code creates a vector of numbers from 1 to 10, initializes a condition flag as FALSE, and sets an index to 1. It then enters a while loop, which continues as long as the condition flag is not TRUE.
+
+# Inside the loop, the code grabs a number from the vector using the index, updates the condition flag based on whether the current number is greater than 7, and increments the index for the next iteration.
+
+# Once the condition flag is TRUE (i.e., when the current number is greater than 7), the loop stops executing. In this case, the loop will iterate 7 times, and the final value of the index (i) will be 8.
+```
+
+Here’s what’s happening in the code above and keep in mind that it's best to break down a while loop into two parts: 1) the set up and 2) the loop itself.
+
+The set up: 1. nums <- 1:10 creates a list of numbers from 1 to 10. Think of it like a line of people numbered 1 through 10.
+
+is_condition_met <- FALSE sets up a criteria that will help us decide when to stop the loop. For now, it's like we have a sign that says "No, we haven't reached our number yet."
+
+i <- 1 sets up a counter starting at 1. This will help us keep track of which number we're looking at from 1 to 10.
+
+Now we get to the while loop itself:
+
+while (!is_condition_met) { ... } means "keep looping inside the brackets as long as our condition is false.
+
+current_num <- nums[i] takes the number at the position we're currently looking at, which starts at position 1.
+
+is_condition_met <- current_num > 7 checks if the number we're currently looking at is greater than 7. If it is, the loop terminates because, we've reached our number!, else, it continues.
+
+i = i + 1 adds 1 to our counter, so next time the loop runs, we'll be looking at the next number in line.
+
+
+
+It's worth mentioning what happens when we don't change the is_condition_met variable. If this variable never changes, then the condition that runs the loop never stops. Your code will look as if it's "frozen" up, but it's actually just running your code infinitely!
+
+Don't worry if this whole process seems daunting. while loops take a bit to understand, but they can be powerful tools once mastered. There are a lot of different variables to juggle, but the key to understanding the while loop is to know how these variables change everytime the loop runs. In the next screen, you'll have your turn to create your own while loop, but for now, explore the code we've provided to you.
+
+PRACTICE:
+```{r}
+nums <- 1:10
+is_condition_met <- FALSE
+i <- 1
+
+# Loop execution
+while (!is_condition_met) {
+
+  print(paste("The loop has run", i, "time(s)"))
+
+  current_num <- nums[i] # Grab a number using the index
+
+  print(paste("current_num is currently:", current_num))  
+    
+  is_condition_met <- current_num > 7 # Recheck the condition
+    
+  print(paste("is_condition_met is currently:", is_condition_met))
+    
+  i = i + 1 # Increase the index
+
+  print(paste("The index i has been set to:", i))    
+    
+}
+```
+
+
+
+Iterations in R
+7 of 9 · Your Own while Loop
+Learn
+We've covered the while loop in great detail over the past two screens. On this screen, you'll finally have a go at constructing your own loop. For your convenience, we've also provided the while loop we covered before to let you review its structure.
+```{r}
+# Loop set up
+nums <- 1:10
+is_condition_met <- FALSE
+i <- 1
+
+# Loop execution
+while (!is_condition_met) {
+
+  current_num <- nums[i] # Grab a number using the index
+  is_condition_met <- current_num > 7 # Recheck the condition
+  i = i + 1 # Increase the index
+}
+```
+
+Before we tackle the exercise, it's worth mentioning the importance of while loops. For the curious, while loops play a major roles in heavy analytical tasks like simulation and optimization. Optimization is the process of finding a set of parameters that either maximize or minimize some goal. Think back to the price-profit example from the for loop example; that was an example of an optimization problem. We were given a vector of prices to use, but there are times that we won't know what prices to try. In this case, it's better to use a while loop to experiment with many, many prices until we see a clear "peak" in the profits.
+
+In typical data analysis tasks like data cleaning or statistical computations, which you’ll frequently encounter in the Data Analyst track and potentially in your career, while loops may not be as applicable. It's beneficial, though, to be aware of the different tools available to you as a programmer.
+
+
+
+
+PRACTICE
+Your exercise is to write a while loop that tells you the price you should purchase the stock for.
+Imagine that you decide to buy a stock as soon as you see that the price has dipped below $70.
+What price will you end up purchasing the stock for? Assign this price to the variable buy_price.
+```{r}
+prices <- c(138.19, 82.72, 118.97, 77.55, 62.28, 89.71, 97.36, 91.98, 113.45, 73.93)
+is_below_70 <- FALSE
+i <- 1
+
+while (!is_below_70) {
+  current_price <- prices[i] #grab a number using index
+  is_below_70 <- current_price < 70
+  i = i + 1
+}
+
+buy_price <- current_price
+buy_price
+# output: 62.28
+```
+
+This code creates a while loop that goes through the prices vector until it finds a price below 70.
+
+
+breakdown of the code:
+
+prices is a vector of prices.
+is_below_70 is a boolean variable that is initially set to FALSE.
+i is a counter that starts at 1.
+The while loop checks if is_below_70 is FALSE. If it is, the loop executes the following code:
+
+current_price is assigned the value of the price at index i in the prices vector.
+is_below_70 is updated to TRUE if current_price is less than 70.
+i is incremented by 1.
+Once the loop finds a price below 70, is_below_70 is set to TRUE, and the loop terminates. The buy_price variable is then assigned the value of the current_price at the last iteration of the loop.
+
+In this case, the loop will iterate through the prices vector until it finds a price below 70, and then it will store that price in the buy_price variable. If all the prices in the prices vector are above 70, then buy_price will be NULL.
+
+
+
+
+Iterations in R
+8 of 9 · Iteration vs Vectorization
+Learn
+In R, for and while loops allow for iteration, which is a key concept we've explored. As we wrap up this lesson, it is important to understand how iteration fits into your workflow as a programmer. Recall that from the Control Flow lesson, we used the if_else() function to apply an if statement on each value of a whole column to create a new column of TRUE and FALSE. In other words, the if_else() function vectorizes the if statement.
+
+Actually, a for loop can also achieve the same result as the if_else() function. So this raises the question, "If iteration and vectorization can produce the same output, which one should I use?"
+
+The answer is almost always *vectorization*. The reason for this is how vectorization calculates its output compared to iteration. A brief example illuminates this. Let's say that we have a vector of numbers, and all we want to do is divide all of them by 1000. We'll show you how to do this through both iteration and vectorization.
+```{r}
+nums <- c(1000, 2000, 3000, 4000, 5000)
+
+# Approach 1: Iteration
+divided_nums <- c()
+for (n in nums) {
+  calc <- n / 1000
+  divided_nums <- c(divided_nums, calc)
+}
+
+# Approach 2: Vectorization
+divided_nums <- nums / 1000
+
+```
+
+It's clear that vectorization can produce the same output as iteration in less code! In iteration, we are changing values one at a time. Each time we are in the loop, we are only changing one value of nums. With vectorization, the division is applied to all the values in nums at the same time, which makes it faster than iteration.
+
+You may have noted that we have followed a particular way of teaching you new functions throughout our Intermediate R lessons. We always try to teach you a function that vectorizes some particular operation. The if_else() function vectorizes if statements, the mutate() function vectorizes the creation of new columns, etc. Vectorization is the reason that we use & and | in if_else() functions instead of && or ||. The single-character versions are vectorized versions of their double-character counterparts. Vectorization works well with the tidyverse libraries, and as a rule of thumb, prioritize using vectorized functions for your tasks.
+
+While there are many functions out there that vectorize particular calculations, there are still some tasks that cannot be vectorized. This is where iteration becomes useful. While we should always be looking to vectorize calculations, we can take comfort knowing that we have other available options.
+
+
+PRACTICE
+
+Instructions
+A vector of temperatures temperatures <- c(22.6, -15.6, 67.7, 18.5, 98.8) is available on the code editor screen. These temperatures are in degrees Fahrenheit (℉). We would like to convert each of these temperatures into degrees Celsius (℃). For a given temperature in Fahrenheit (F), we can convert it to Celsius (C) using the formula:
+
+C = (F−32) × 5/9
+
+Using a for loop, convert each of the values in temperatures into Celsius and store it into another vector called celsius_iteration.
+In your for loop, name your placeholder variable temp. This is used to check your answer.
+Ensure you use the formula exactly as it is shown above and do not use parentheses to wrap the fraction. While this operation would be mathematically equivalent and would appear to produce the same result, sometimes R doesn't think numbers are equal.
+Use vectorization, convert each of the values in temperatures into Celsius and store it into a vector called celsius_vectorization.
+
+```{r}
+temperatures <- c(22.6, -15.6, 67.7, 18.5, 98.8)
+
+celsius_iteration <- c()
+for (n in temperatures) {
+    temp <- (n - 32) * 5/9
+    celsius_iteration <- c(celsius_iteration, temp)
+}
+
+celsius_vectorization <- celsius_iteration
+```
+
+Iterations in R
+9 of 9 · Next Steps
+In this lesson, we learned about iteration and how to implement them in R using the for and while loops. We also found out that for loops are better suited for cases with a defined set of elements where we need to iterate over, and while loops are better for when we need to satisfy a particular condition through our loops. In the next lesson, we'll learn how to make our own custom functions in R.
+
+
+
