@@ -3232,3 +3232,377 @@ In this lesson, we learned about iteration and how to implement them in R using 
 
 
 
+
+
+Functions in R
+1 of 8 · Introduction
+
+Learn
+Welcome back! In our previous lesson, we covered how to use control structures and various functions with tibbles and the tidyverse libraries. Throughout the course, we learned about functions and just described how to use them in particular contexts. As we continue our learning journey with R, it is time for us to dive deeper into functions in R.
+
+Functions are a fundamental tool in a programmer's toolkit. You can think of functions as recipes in cooking which describes how to take raw ingredients and process them according to a set of steps that ultimately produces a finished meal. In programming, functions have similar behavior to cooking recipes by taking inputs in the form of data (numbers, strings, etc.), processes this data with help of some code, and outputs a modified form of the data that can also be further used in your programming.
+
+We have encountered some functions that behave alike. The if_else() function takes a column of values and pushes all these values through an if-else statement. The read_csv() function takes a string that represents the location of a CSV dataset and outputs a tibble that contains a copy of this data.
+
+Functions are important to programmers because it allows us to reuse code in quick, readable lines. Rather than repeating many steps in a complicated operation, we can wrap it up inside a function and use it wherever we need. For example, take the mean() function from base R that calculates the average value of a given vector — we could manually write out the average calculation:
+```{r}
+nums <- 1:10
+mean_nums <- sum(nums) / length(nums)
+mean_nums
+```
+
+Nothing stops us from writing out sum(nums) / length(nums) every time we need to calculate an average but this can get tiring and if you were not familiar with how to calculate an average, you might look at the bit of code and not know what it does. Meanwhile, having a code that reads like:
+```{r}
+nums <- 1:10
+mean_nums <- mean(nums)
+mean_nums
+```
+makes it clearer and particularly states what the code is doing. Another benefit of applying functions is to reduce Code Redundancy: reducing the amount of repeated codes we have to write. If you ever find yourself writing the same code over and over again, it might be worth turning it into a function. If you need to change this code, all you need to do is change the function code instead of having to look for all your repeated codes. In this lesson, we'll learn how to create our own functions instead of having to rely purely on R's pre-built functions.
+
+
+
+Functions in R
+2 of 8 · Components Of A Function
+Learn
+On the last screen, we made a comparison between a programming function and a recipe.
+
+These three sections are what make up a function: inputs, an internal code chunk, and an output. We'll explore these three different components and use them to demonstrate how functions are actually built in R. Let's make our own version of the mean() function to demonstrate this:
+```{r}
+example_mean <- function(nums) {
+  sum_nums <- sum(nums)
+  length_vec <- length(nums)
+  
+  return(sum_nums / length_vec)
+}
+
+```
+
+The above code creates and assigns a function named example_mean. By specifying function, we are telling R that we want to create a function. After the function keyword, we have a nums variable inside the function's parentheses. These parentheses help define the input of our example_mean function — the data that the function will take and transform.
+
+Now that we have the nums input, we need to create code that transforms the nums input into an average. After the function keyword, we have a code chunk surrounded by curly brackets. Within this code chunk, we calculate the two components that are needed to calculate an average. The only time that this code will be run is when the example_mean() function is being used.
+
+Finally, we have the return keyword. Once we have all of the values we need, we need to tell the function what value it should give back to the user. For our function, we want to output the average, so this is what we put inside the return's parentheses.
+
+To recap, all functions have this essential format: Name the inputs, write out code in the code chunk, and return the output. In order to use the function, you would need to refer to it by the variable you assigned it to. For example:
+```{r}
+example_mean <- function(num) {
+  sum_nums <- sum(nums)
+  length_vec <- length(nums)
+  
+  return(sum_nums / length_vec)
+}
+
+avg <- example_mean(1:10)
+avg
+```
+
+PRACTICE
+
+1. Create a function called find_longer_vector() which takes two vectors (inputs) and tells you which one is longer.
+If the first vector is longer, the function should return the string "First".
+If the second vector is longer, it should return the string "Second".
+If they are equal, it should return the string "Equal Length".
+2. Using the two given vectors, first_vec and second_vec, apply them to your find_longer_vector() function to see which one was longer. Assign your answer to the variable first_vs_second.
+3. Using the two given vectors, first_vec and third_vec, apply them to your find_longer_vector() function to see which one was longer. Assign your answer to the variable first_vs_third.
+
+```{r}
+first_vec <- c(1, 5, 4, 2, 3, 7, 6)
+second_vec <- c(9, 2, 1, 8, 3, 4, 5, 6, 10, 7, 12, 11)
+third_vec <- c(8, 3, 5, 1, 7, 1, 10)
+
+find_longer_vector <- function(vec_one, vec_two) {
+  if (length(vec_one) > length(vec_two)) {
+    return("First")
+  } else if (length(vec_one) > length(vec_two)) {
+    return("Second")
+  } else {
+    return("Equal Length")
+  }
+}
+
+first_vs_second <- find_longer_vector(first_vec, second_vec)
+first_vs_third <- find_longer_vector(first_vec, third_vec)
+
+first_vs_second
+first_vs_third
+```
+
+
+
+Functions in R
+3 of 8 · Namespaces For Functions
+Learn
+
+On the last screen, we created the example_mean function which calculates the mean of a vector of numbers.
+```{r}
+example_mean <- function(nums) {
+  sum_nums <- sum(nums)
+  length_vec <- length(nums)
+  
+  return(sum_nums / length_vec)
+}
+```
+
+Within the code chunk of the example_mean() function, we defined two variables sum_nums and length_vec. These two variables are only accessible when the function is used. After the function calculates and returns its value, they become inaccessible. For example, calculating a mean and then trying to access sum_nums will throw you an error:
+```{r}
+test_mean <- example_mean(1:20)
+
+> sum_nums
+Error: object 'sum_nums' not found
+```
+
+This leads us to the concept of namespaces. The sum_nums and length_vec variables only exist in the namespace of the example_mean() function. The namespace is essentially the environment that variables and functions live in. Once the example_mean() function is created, it is also stored in the overall namespace. Once the example_mean() function is called, it will have its own namespace as well. The diagram below summarizes this:...
+
+In this diagram, the outer namespace contains the example_mean() function which has been defined. It's only when example_mean() is being used that its own namespace is created. Furthermore, any variable in the outer namespace cannot access variables in the inner namespace. The important takeaway from namespaces is to understand and recognize where your variables are defined. As you make your functions, you may try to reference a variable that only exists inside of a function. You can save yourself some time and frustration by keeping track of which namespace your variables are in.
+
+
+
+
+Functions in R
+4 of 8 · Functions with Multiple Inputs
+Learn
+
+Initially, we created the example_mean() function which took only one input nums and returned its average. In R, functions can be extremely flexible and are capable of handling more than one input, increasing their overall capabilities. Let's say that we want to make a function that takes two numbers, divides them and returns the remainder, much like the modulo operator %%. We would write this function as follows:
+
+```{r}
+remainder <- function(dividend, divisor) {
+  whole <- floor(dividend / divisor)
+  rem <- dividend - (whole * divisor)
+  
+  return(rem)
+}
+```
+
+Our remainder() function takes two inputs, dividend and divisor, both seperated by a comma. Commas are used to seperate multiple inputs inside the parentheses after the function keyword.
+
+It's important to know that order matters when we pass in inputs to a function. For our remainder() function, the first input will be used as dividend, and the second one will be used as divisor. Another way of saying this is that the output of remainder(4,3) will be different from remainder(3,4) because different numbers get assigned to different inputs. Their positions determine how they will be used within the function, making them positional inputs: the position they take when you call the function.
+
+The floor() function is a built-in R function that rounds a number down to the nearest integer that is less than or equal to it. It takes a numeric input and returns a numeric output. For example, floor(3.9) returns 3 because 3 is the largest integer that is less than or equal to 3.9.
+
+In the context of the remainder() function, the floor() function is used to calculate the number of times the divisor can be divided into the dividend without a remainder. This is the whole number part of the division operation, or the quotient rounded down to the nearest integer. For example, if dividend is 10 and divisor is 3, then floor(10 / 3) returns 3, which is the number of times 3 can be divided into 10 without a remainder. This value is stored in the variable whole, which is then used in the next line of the code to calculate the remainder of the division operation.
+
+The third line of the code rem <- dividend - (whole * divisor) is calculating the remainder of the division operation between dividend and divisor.
+
+With this knowledge, you'll make your own multiple input function before moving on.
+
+PRACTICE
+Instructions
+1. Create a function called is_divisible that takes two numbers and calculates if the first one is divisible by the second one. Divisible means that two numbers can be divided, and there will be no remainder. If the two numbers are divisible, return TRUE. If not, return FALSE.
+2. Use your is_divisible() function to check if 5731 is divisible by 11. Assign your answer to the variable div_5731_by_11.
+
+```{r}
+is_divisible <- function(dividend, divisor) {
+  whole <- floor(dividend / divisor)
+  rem <- dividend - (whole * divisor)
+  
+  if (rem == 0) {
+      return(TRUE)
+  } else {
+      return(FALSE)
+  }
+}
+
+div_5731_by_11 <- is_divisible(5731, 11)
+div_5731_by_11
+
+# output: TRUE
+```
+
+
+
+Functions in R
+5 of 8 · Default Arguments in Functions
+Learn
+
+On the last screen, we learned how to use multiple inputs in our functions. On this screen, we'll learn how to differentiate the different types of inputs and their uses. A synonym for input is argument. For the most part, we will refer to the items we give to functions as inputs, but it's important to be aware that inputs can be substituted with arguments or other words.
+
+In order to use a function, it must be supplied with all of the inputs that it expects. The example_mean() function was created with one input, and that's what we gave it. The remainder() function had two, and it will only work if given two inputs. You can think of these as required inputs/arguments.
+
+There is another type of input/argument where we can tell the function to assume a certain value. If the function is created with an input of a particular value, it will use that value unless told otherwise. Let's examine a slight variant of the remainder() function:
+
+```{r}
+remainder2 <- function(dividend, divisor = 2) {
+  whole <- floor(dividend / divisor)
+  rem <- dividend - (whole * divisor)
+  
+  return(rem)
+}
+
+```
+
+The above remainder2() function is similar to the remainder() from the last screen, but with a slight tweak. Instead of requiring the programmer to provide an input for the divisor parameter, remainder2() will assume that divisor = 2 if not otherwise specified. Instead of giving remainder2() two inputs, it can just be given one, which will be supplied to the dividend part.
+
+In remainder2(), divisor = 2 is what we call a keyword argument with a default value of 2. Keyword arguments are useful because we can specify default values for functions. If you wanted to use a different value for the keyword argument, you will actually need to refer to it by its input name. For example, if we wanted to use remainder2() to divide by 3 instead, we would write the following:
+
+```{r}
+remainder2(9, divisor = 3)
+```
+
+Following this convention, we can write out all of the inputs as keyword arguments. This could be valuable in cases where you're working with other programmers and you want to be as explicit as possible in your code.
+```{r}
+remainder2(dividend = 9, divisor = 3)
+```
+On the other end of the spectrum, we may also simply write remainder2(9, 3), but this assumes some more knowledge of the function itself. By outrightly specifying divisor = 3 in the code, it gives more information to others who might be reading your code. Keyword arguments are a useful tool to be aware of when creating and using functions.
+
+
+
+
+Functions in R
+6 of 8 · Managing Functions with Variable Arguments
+Learn
+
+On the last screen, we learned about both positional and keyword/default arguments. These arguments are important because they are how you give your data a variable name within the namespace of your function. When we use positional and keyword arguments in our functions, we are also implyfing that there is a set number of variables that the function needs to run. For instance, the is_divisible() function we created earlier expects and will take only two arguments: divisor and dividend. Now, what if we don't know the number of arguments we need ahead of time? What do we do in this situation? In other words, what if we need a function to handle a variable number of inputs?
+
+This situation comes up frequently in programming problems that we will discuss more on the next screen. For now, we will use an example to illustrate this. Let's say we have a function that performs a simple calculation of adding two numbers together:
+```{r}
+add <- function(x, y) {
+  return(x + y)
+}
+```
+
+As you might expect, this function just takes in two arguments x and y and returns the result of their addition. Suppose we want to expand the functionality of this add() function by letting it add up any amount of numbers that we pass to it. In other words, we want the add() function to be more flexible in accepting a variable number of arguments. How would we do this?
+
+R gives us a special construct to represent extra arguments that we add to a function. We call it the three-dot construct. Let's create a new function called new_add() function and build it up:
+```{r}
+new_add <- function(x, y, ...) {
+  return(list(...))
+}
+```
+
+In its form above, the new_add() function doesn't do any adding. It just returns the three-dot construct in the form of a list. To see why this is useful, let's use our new_add() function in two ways:
+```{r}
+add <- function(x, y) {
+  return(x + y)
+}
+
+new_add <- function(x, y, ...) {
+  return(list(...))
+}
+
+new_add(1, 2, z = 3)
+$z
+[1] 3
+
+new_add(1, 2, z = 3)
+$z
+[1] 3
+```
+
+In both of the examples above, the numbers 1 and 2 are used for the x and y arguments respectively. What's new here is that we are adding new arguments that are not specified in new_add(). Since they are not specified, R assumes that they will be a part of the three-dot construct. In the first use of new_add(), we see that the z argument is put in a list. We put it in a list because it allows us to see exactly what was in the ... construct. The z name is associated with what we originally assigned it (z = 3). We see the same for the second use: both z and w are a part of the list that we pass ... into. This is what allows us to handle a variable amount of arguments. Anything that cannot be used as a positional or keyword argument will be assumed to be a part of the three-dotconstruct, and we can access all this information as long as we put it in a list. You can imagine if we added a fifth argument tonew_add(). It will also be put in the list the same way aszandw`.
+
+Now let's finish up our new_add() function:
+
+```{r}
+new_add <- function(x, y, ...) {
+  current_num = x + y
+
+  for (num in list(...)) { 
+    current_num = current_num + num
+  }
+
+  return(current_num)
+}
+
+new_add(1, 2, z = 3)
+# output: 6
+new_add(1, 2, z = 3, w = 4)
+# output: 10
+```
+
+Above, the new_add() function uses a for loop to iterate through all of the numbers that are contained in list(...). Since we don't know how many numbers will be in ... ahead of time, we just iterate through all of the elements that would be in it once the function is run. Don't worry if you don't understand this right away, variable arguments are less intuitive to use than positional or keyword arguments, but they can add another degree of flexibility in your code.
+
+Now that you're familiar with the three-dots construct, try creating a function that utilizes it. This could be a function that takes an arbitrary number of numeric inputs and performs an operation like addition, multiplication, or finding the maximum. On the next screen, we'll learn a more realistic, everyday use case for the three-dots construct in functions.
+
+
+PRACTICE
+1. Create a function called subtract_all() that takes a starting number as the first argument and then a variable amount of numbers. The subtract_all() function should subtract all the numbers that are given to it from the starting number and then return the result of all of the subtraction.
+2. Using your subtract_all() function, start with the number 10 and subtract the numbers, 1, 2, and 3, from it. Assign the result to the variable first_subtraction.
+3. Using your subtract_all() function, start with the number 100 and subtract the numbers, 71 and 22, from it. Assign the result to the variable second_subtraction.
+```{r}
+subtract_all <- function(start, ...) {
+  current_num <- start
+  
+  for (num in list(...)) {
+    current_num <- current_num - num
+  }
+  
+  return(current_num)
+}
+
+first_subtraction <- subtract_all(10, 1, 2, 3)
+second_subtraction <- subtract_all(100, 71, 22)
+
+first_subtraction
+second_subtraction
+```
+
+
+
+Functions in R
+7 of 8 · Nested Functions
+Learn
+
+As we wrap up this lesson on functions, we'll discuss one last use case for the three-dots construct, which lets us handle a variable number of arguments. This use case strikes at the heart of why functions are useful to us, allowing us to take a more complicated operation/calculation and perform it in one line of code.
+
+Functions make themselves even more helpful in problems where there might be multiple types of calculations to perform. Let's say that we have a process that can be contained in three functions:
+```{r}
+clean_data <- function(data) {
+  # Data cleaning code is contained in here
+}
+
+analyze_data <- function(data, analysis_parameters) {
+  # This function takes clean data and does analysis on it
+}
+
+create_report <- function(analyzed_data, report_parameters) {
+  # This function creates a nicely formatted report from the analysis
+}
+```
+
+
+The actual code is not important, but this represents a common situation that you might find yourself in. Starting with raw data, you create different functions to handle some of the basic tasks in data analysis: cleaning, then analyzing, and reporting the results.
+
+Now, you might be tempted to stop here and just run each of the functions one after the other, but there is an alternative to this. Instead of running these three functions every time you need to, you could also write another function that contains all of them and just returns the final report. In other words, you can simplify your entire workflow into one line by writing a function that contains or nests, the other functions in it.
+```{r}
+# A workflow function that nests the entire process
+perform_workflow <- function(data, ...) { 
+
+  # Store all the extra parameters in a list to access later
+  varargs <- list(...)
+
+  final_report = data %>%
+    clean_data() %>%
+    analyze_data(analysis_parameters = varargs$analysis_parameters) %>%
+    create_report(report_parameters = varargs$report_parameters)
+
+  return(final_report)
+}
+
+# call the perform_workflow function with the necessary data
+data <- read_csv("some/path/to/data.csv")
+example <- perform_workflow(data, 
+                            analysis_parameters = "setting1", 
+                            report_parameters = "setting2")
+
+```
+
+
+In the above example, we create a new function perform_workflow() that nests the three functions for our data analysis workflow. The analyze_data() and create_report() functions take parameters that need to be passed into it, so we use the three-dots construct to hold these when we need them. The three-dots construct gives us a lot of flexibility when we make our workflow function. This particular process only takes 3 functions, but your own workflows can contain many more functions, each with their own argument needs. The ... allows us to keep our perform_workflow() function short, while allowing us to add as many functions and extra arguments that we might need.
+
+We could specify an analysis_parameters and report_parameters in the arguments list of perform_workflow(), but this could get long fast, especially if we're working with more functions with their own parameters.
+
+Functions in R
+8 of 8 · Next Steps
+In this lesson, we learned how to create our own functions which simplifies repetitive tasks like the remainder() function. We explored how functions can handle multiple inputs, default arguments, and variable numbers of arguments. We introduced the concept of nested functions, particularly using the three-dot construct.
+
+Like control flow, functions are an essential programming skill to learn. As you progress through the R path, you will be introduced to more and more functions.
+
+In the next lesson, we'll dive into string handling in R with more sophisticated techniques. This will include manipulation, formatting, and analysis of string data. String handling is an essential skill, especially in data processing and analysis, where text data is a common occurrence.
+
+
+
+
+
+
+
+
