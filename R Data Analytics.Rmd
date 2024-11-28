@@ -3603,6 +3603,76 @@ In the next lesson, we'll dive into string handling in R with more sophisticated
 
 
 
+String Manipulation in R: Fundamentals
+1 of 10 · Introduction
+Learn
+
+After learning the fundamental concepts of R: data structures, control flow, functions, iterations, it's important that we understand how to manipulate different types of data while applying what we now already know.
+
+If we recall from our introduction to R, there are basic data types in R: numbers (integers and doubles), logicals (TRUE and FALSE), factors, and strings. So far, we mainly worked with numerical data and logicals, but we have not really explored strings.
+
+In this lesson, we'll fill this blank and go through a detailed review of what strings are and what we can do with them. Strings are how R represents text, whether we are talking about tweets, electronic medical records or Amazon reviews, text data is everywhere. Compared to numerical data, text data can be harder to clean and manipulate since it involves dealing with lots of words. We also can't typically do numerical calculation directly with text; we need to perform some cleaning steps beforehand.
+
+Typical work with strings usually has to do with finding specific words or phrases in a larger paragraph, or counting the number of times it appears in a passage. By the end of this lesson, we'll know how to use many of the functions that help us with string manipulation, which further opens up our capabilities as a programmer.
+
+
+
+String Manipulation in R: Fundamentals
+2 of 10 · Indexing Strings
+Learn
+
+Before we learn about the various string manipulation functions, we will review an important aspect of strings. In R, a string is also known as a character vector. Throughout this lesson, we'll use these two phrases interchangeably. The word "vector" here is important because it hints at how strings are structured in R. Vectors are ordered lists. So, there's a method to the "first item" of a vector, the "last item" and so on.
+
+In R, we can locate or index, particular elements of a vector using numbers. The first item in a vector is indexed by the number 1. For example, we can get the first item of a vector of numbers like below:
+```{r}
+nums <- 1:5
+nums[1]
+# output: 1
+```
+
+We can think of any string as a vector of letters, numbers and symbols. We denote strings by surrounding them with single quotes as in 'string' or with double quotes, as in "string". One rule to follow is to never mix the quotes like "string'. You will get an error message. However, same way we index a numerical vector with numbers, we can also index character vectors in the same way, but with caution. Let's see the example below:
+```{r}
+words <- "Dataquest is awesome"
+words[3]
+# output: NA
+```
+
+You may have thought that R would interpret it as three words but surprisingly, this results in NA because R interprets the entire sentence, "Dataquest is awesome", as a one-element vector containing that whole string. Here's the proof:
+```{r}
+words <- "Dataquest is awesome"
+words[1]
+# output: [1] "Dataquest is awesome"
+```
+In order to get a substring of the string, we need to use the str_sub() function from the stringr library. The stringr library is a component of the tidyverse libraries, dedicated to handling strings. To get the first word from the string "Dataquest is awesome", we need to supply 3 arguments to the str_sub() function.
+```{r}
+library(stringr)
+str_sub(words, 1, 9)
+# output: [1] "Dataquest"
+```
+The first input is the string we want to get a substring from. The second input is where we want to start indexing the string, while the third input is where we want to end the indexing. Dataquest is 9 letters long, so our end index is 9.
+
+Now, let's introduce another concept: negative indexing. Negative indexing allows us to count from the end of a string, making it quite handy. For example, to get the last word awesome from the sentence "Dataquest is awesome", we can use:
+```{r}
+str_sub(words, -7, -1)
+# output: [1] "awesome"
+```
+
+Here, -7 represents the 7th character from the end, and -1 represents the last character. This way, we can easily access the desired substring even when we don't know the exact character count. Negative indexing is a powerful tool for working with strings in R. Let's practice.
+
+PRACTICE
+1. Get the first 4 letters of the word "Dataquest" and assign it to the variable first_four_letters.
+2. Get the last 2 letters of the word "Dataquest" and assign it to the variable last_two_letters. You can use negative indexing if you wish.
+```{r}
+library(tidyverse)
+word <- "Dataquest"
+first_four_letters <- str_sub(word, 1, 4)
+last_two_letters <- str_sub(word, -2)
+
+```
+
+
+
+
 
 
 
