@@ -3673,6 +3673,64 @@ last_two_letters <- str_sub(word, -2)
 
 
 
+String Manipulation in R: Fundamentals
+3 of 10 · Handling Word Casing
+Learn
+
+One particularly common string manipulation task in data analysis is changing the column names of a dataset. As with other lessons, we'll use the recent_grads dataset to practice our skills. Below are the original column names of recent_grads:
+```{r}
+colnames(recent_grads)
+
+# [1] "Rank" "Major_code" "Major" "Total" "Men"                 
+# [6] "Women" "Major_category" "Sample_size" "Employed" "Full_time"           
+# [11] "Part_time" "Full_time_year_round" "Unemployed" "Unemployment_rate" "Median"       
+# [16] "College_jobs" "Non_college_jobs" "Low_wage_jobs"
+
+```
+Notice that each of these column names are strings and start with a capital letter. However, it's common practice to standardize the column names by turning everything into lowercase. Having each letter in lower case makes them easier to type and worryless about letter casings. It's a small detail, but it's good practice to incorporate into our analysis.
+
+Instead of manually replacing the first capital letter for each of the column names, we can turn to another function from stringr called str_to_lower(). This function just takes a character vector, and converts all of the letters to lowercase:
+```{r}
+str_to_lower(colnames(recent_grads))
+
+# [1] "rank" "major_code" "major" "total" "men"                 
+# [6] "women" "major_category" "sample_size" "employed" "full_time"           
+# [11] "part_time" "full_time_year_round" "unemployed" "unemployment_rate" "median"       
+# [16] "college_jobs" "non_college_jobs" "low_wage_jobs"
+
+```
+
+There's a reverse function to str_to_lower() that converts everything to uppercase: the str_to_upper() function. There are less situations where we might want to convert everything into uppercase, but knowing that the function exists can be helpful.
+
+PRACTICE
+
+1. Convert the column names of the recent_grads dataset to lowercase and assign them to the vector lower_case_colnames.
+2. Using the function str_to_lower() doesn't directly change the column names of the tibble, we actually need to reassign colnames(recent_grads) in order to do this. Using lower_case_colnames, reassign the column names of recent_grads to be all lowercase.
+```{r}
+library(tidyverse)
+# Supply col_types = cols() to suppress column specification output
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+lower_case_colnames <- str_to_lower(colnames(recent_grads))
+colnames(recent_grads) <- lower_case_colnames
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
