@@ -3717,17 +3717,45 @@ colnames(recent_grads) <- lower_case_colnames
 
 
 
+4 of 10 · String Trimming & Padding
+Learn
+Another common string manipulation task is cleaning up strings by removing unnecessary whitespace. This process, known as trimming, is common in tasks like web scraping where the string data comes from sources like HTML and CSS. For example, take the following string:
+
+```{r}
+padded_string <- "     Dataquest      "
+
+```
+
+padded_string has extra spaces that come before and after the word "Dataquest". In order to trim the leading and trailing whitespace, you can use the handy str_trim() function from stringr. The str_trim() function by default takes any character vector and removes all of the whitespace from both sides of the string.
+
+```{r}
+library(tidyverse)
+str_trim(padded_string, side = "both")
+"Dataquest"
+
+```
+
+We may also specify "left" or "right" to the side argument if we only want to trim one side.
+
+There are other times where we might want to perform the opposite of trimming, which is known as padding. Padding is useful in cases where we need to standardize a bunch of strings to a common length for further processing. The stringr function to use for padding is the str_pad() function. In order to use the str_pad() function, we have to know in advance how long we want the resulting string to be.
+```{r}
+str_pad("Dataquest", width = 20, side = "both", pad = " ")
+" Dataquest "
+
+```
+
+The number width = 20 defines the length we want the output of the str_pad() function to be. The side argument helps tell str_pad() how to distribute the extra whitespace that's being added to the string, not how much whitespace to add to each side. If our width is shorter than the word we give it, then no padding will be added to the word. The pad keyword lets us specify the exact character we want to use for padding. The str_pad() function defaults to using a space.
 
 
+PRACTICE
 
+The recent_grads dataset has been loaded in. It turns out that the major_code column is formatted incorrectly and actually has leading zeroes. For example, the number "2419" should actually be "0002419". We'll use what we know now to correct this column.
 
+1. Create a new column in recent_grads called formatted_major_code. Take the major_code column and correctly format it according to the description above.
+2. A vector strings_to_trim <- c(" Apple", "Banana ", " Cherry ", " Date ") is made available to you. Clean up the strings by removing any leading and trailing whitespace. Assign the cleaned strings to the variable trimmed_strings.
+```{r}
 
-
-
-
-
-
-
+```
 
 
 
