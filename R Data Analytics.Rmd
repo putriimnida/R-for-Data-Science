@@ -3754,6 +3754,20 @@ The recent_grads dataset has been loaded in. It turns out that the major_code co
 1. Create a new column in recent_grads called formatted_major_code. Take the major_code column and correctly format it according to the description above.
 2. A vector strings_to_trim <- c(" Apple", "Banana ", " Cherry ", " Date ") is made available to you. Clean up the strings by removing any leading and trailing whitespace. Assign the cleaned strings to the variable trimmed_strings.
 ```{r}
+library(tidyverse)
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+colnames(recent_grads) <- tolower(colnames(recent_grads))
+# Add code below
+
+# strings to trim
+strings_to_trim <- c("   Apple", "Banana   ", "  Cherry  ", " Date ")
+#Add code below
+recent_grads <- recent_grads %>%
+    mutate(
+        formatted_major_code = str_pad(major_code, 7, pad = "0")
+        )
+
+trimmed_strings <- str_trim(strings_to_trim, side = "both")
 
 ```
 
