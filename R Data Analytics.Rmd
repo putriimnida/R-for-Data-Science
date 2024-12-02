@@ -3773,6 +3773,80 @@ trimmed_strings <- str_trim(strings_to_trim, side = "both")
 
 
 
+5 of 10 · String Splitting
+Learn
+So far, all of the functions we dealt with have only looked at single words. However, in many cases, we'll encounter sentences with many words. Sentences are still treated as a single character vector, but there are some other operations that we can use with them. For example the following sentence:
+```{r}
+sentence <- "The stringr library is essential to string manipulation"
+
+```
+
+From R's perspective, the sentence variable just contains a single long string, but, from our human eyes, we see a sentence composed of multiple words. Fields like natural language processing often try to take these sentences and break them down into their component words. Now, instead of one long sentence, we would need a character vector where each element is an individual word. stringr provides the str_split() function for this purpose:
+```{r}
+library(stringr)
+sentence <- "The stringr library is essential to string manipulation"
+str_split(sentence, " ")
+
+# output: 
+# [[1]]
+# [1] "The" "stringr" "library" "is" "essential" "to" "string"       
+# [8] "manipulation."
+```
+The output of the str_split() function is a list. In the example above, sentence only contains one string, so the output list only contains one element: the complete sentence in a split form appearance. If we actually wanted to access this vector itself, we need to use double bracket notation, as in the following:
+```{r}
+str_split(sentence, " ")[[1]]
+
+# output:
+# [1] "The" "stringr" "library" "is" "essential" "to" "string"       
+# [8] "manipulation."
+
+```
+
+From here we can access the different elements of the character vector using single bracket notation, since that's how we access things in vectors. If this gets to be a little confusing, it might be easier to assign a variable with a more helpful name to distinguish which data structure we're working with.
+```{r}
+# Store the first element in the str_split list
+sentence_words <- str_split(sentence, " ")[[1]]
+
+# Access elements in the vector
+sentence_words[1]
+# [1] "The"
+
+sentence_words[1:3]
+# [1] "The" "stringr" "library"
+
+```
+
+str_split() needs to be told what character it should split a sentence by, which we specify in the second input. Naturally, words are separated by whitespace, so that's what we use here (" "). We may also use "-" for things like phone numbers. By using str_split(), you can efficiently split sentences into words for various text analysis tasks.
+
+
+PRACTICE
+1. We provided a sentence with input_sentence. Use the str_split() function to split it into a character vector. Assign the character vector itself to the variable output1.
+2. Take output1 and get the first 4 words from it. Assign these words to the variable output2.
+
+```{r}
+library(tidyverse)
+
+input_sentence <- "You'll need to split this sentence."
+
+output1 <- str_split(input_sentence, " ") [[1]]
+output2 <- output1[1:4]
+
+output1
+output2
+
+# output:
+# [1] "You'll"    "need"      "to"        "split"     "this"      "sentence."
+# [1] "You'll" "need"   "to"     "split" 
+
+```
+
+
+
+
+
+
+
+
 
 
 
