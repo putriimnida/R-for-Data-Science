@@ -3841,12 +3841,31 @@ output2
 ```
 
 
+6 of 10 · String Concatenation
+Learn
+While we can split sentences into individual words, there are other times where we might want to combine multiple words into one sentence instead. We call this operation string concatenation. The str_c() function does this for us by taking in a character vector of multiple strings and returns a single-element character vector with the combined sentence.
 
+```{r}
+library(tidyverse)
+words <- c("String", "concatentation", "via", "function")
+str_c(words, collapse = " ")
+# output:
+# [1] "String concatentation via function"
+```
 
+The collapse keyword is what tells R which character to use as a separator between words while combining them into one string. Another word for this is delimiter. We use a single space " " for the collapse argument, so we can see in the resulting sentence that each of the words is separated or delimited by a single whitespace.
 
+In general, string splitting is a much more common operation than string concatenation, but it's important to be aware of how both operations work.
 
+PRACTICE
+We provided a character vector with the input_words variable. Use the str_c() function to combine it into a single sentence. Assign this character vector itself to the variable sentence.
+```{r}
+library(tidyverse)
 
+input_words <- c("This", "set", "of", "words", "should", "be", "combined")
+sentence <- str_c(input_words, collapse = " ")
+sentence
 
-
-
-
+# output:
+# [1] "This set of words should be combined"
+```
