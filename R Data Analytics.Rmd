@@ -3882,3 +3882,24 @@ Basically, regular expressions have two elements:
 2. Specific Search Pattern: A search pattern is just a general term for a specific string or set of characters we want to find. When we are supplying a specific word into CTRL + F or Command + F to find a word in your search engine, we are giving it a search pattern to look for. We'll see the use of these patterns on the next two screens, so it's good to know their functions.
 
 In general, most people use regular expression for word search, but it can be used for much more powerful purposes. Sophisticated regular expressions can be used to search and detect phone numbers, which is much harder than it sounds.
+
+
+
+8 of 10 · String Detection
+Learn
+On the previous screen, we introduced the concept of regular expression which is used to search for specific patterns (words, characters, etx.) in a set of text. On this screen, we'll learn how to answer the question, "does this string contain a particular substring we are interested in?"
+
+Take for example the following sentence:
+```{r}
+review <- "I really enjoyed this product, and I thought it was great for the price."
+
+```
+Let's say that we have many similar reviews like the one above and we want to try to figure out how much people like the product. Looking at the review, we can tell it has a positive sentiment because of words like "enjoyed" and "great" indicate that the user liked it. Maybe we can try to detect positive words as a way to measure how many reviews were good. To answer our question, we can use the str_detect() function.
+```{r}
+library(tidyverse)
+review <- "I really enjoyed this product, and I thought it was great for the price."
+str_detect(review, "great")
+
+# output: TRUE
+```
+
