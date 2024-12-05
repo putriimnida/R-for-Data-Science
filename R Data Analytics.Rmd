@@ -3869,3 +3869,16 @@ sentence
 # output:
 # [1] "This set of words should be combined"
 ```
+
+7 of 10 · Regular Expression
+Learn
+The last few topics of this lesson involves searching strings. String search is one of the most common tasks that we can perform with strings. If you've ever used CTRL + F or Command + F to try to find a particular word in your search engine, then you have used string search.
+
+The technical term for searching for specific strings is regular expression, or regex for short. Regular expression is a large topic as we cover later in our Regular Expressions Basics and Advanced Regular Expressionlessons, so we'll only cover the fundamental concepts needed to understand how to use some essential stringr functions.
+
+Basically, regular expressions have two elements:
+1. Text to Search Through: This is the text in which you want to search for something specific.
+
+2. Specific Search Pattern: A search pattern is just a general term for a specific string or set of characters we want to find. When we are supplying a specific word into CTRL + F or Command + F to find a word in your search engine, we are giving it a search pattern to look for. We'll see the use of these patterns on the next two screens, so it's good to know their functions.
+
+In general, most people use regular expression for word search, but it can be used for much more powerful purposes. Sophisticated regular expressions can be used to search and detect phone numbers, which is much harder than it sounds.
