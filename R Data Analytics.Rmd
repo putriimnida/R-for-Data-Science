@@ -3902,4 +3902,12 @@ str_detect(review, "great")
 
 # output: TRUE
 ```
+The text we want to search through is in the variable review, and the search pattern is "great". Since the word "great" is contained within the review sentence, the str_detect() function returns TRUE.
+
+It's important to note specifically what the str_detect() function is doing. From a practical standpoint, it may seem that the function is simply searching for the exact word "great", but there's a subtle aspect to it. In reality, it's checking whether the specified substring "great" is present within the review string. This subtlety can become a problem when smaller words are part of longer words. Let's say that we want to look for the word "pro" in the review. This is what str_detect() function will return:
+```{r}
+str_detect(review, "pro")
+# output: TRUE
+```
+The substring "pro" is contained within the word "product", but if we don't understand what str_detect() is doing, we would be mistaken and think the word "pro" appears in the review.
 
