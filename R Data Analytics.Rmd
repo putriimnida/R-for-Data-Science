@@ -3911,3 +3911,18 @@ str_detect(review, "pro")
 ```
 The substring "pro" is contained within the word "product", but if we don't understand what str_detect() is doing, we would be mistaken and think the word "pro" appears in the review.
 
+PRACTICE
+The recent_grads dataset is loaded in.
+We want to do an analysis on all of the majors that contain the word "ARTS". Create a new column called is_arts in the recent_grads dataset that is TRUE when Major contains the word "ARTS" in it or FALSE if it doesn't.
+```{r}
+library(tidyverse)
+
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+
+recent_grads <- recent_grads %>%
+    mutate(
+        is_arts = str_detect(Major, "ARTS")
+        )
+
+```
+
