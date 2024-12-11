@@ -3926,3 +3926,18 @@ recent_grads <- recent_grads %>%
 
 ```
 
+9 of 10 · String Replacement
+Learn
+String replacement is similar to string detection, but it takes it one step further. In addition to detecting a particular search pattern, string replacement takes that pattern and replaces it with another one using the str_replace() function.
+
+Let's say that we're dealing with more reviews and we're still trying to check the quality of the reviews whether they are good or not. We then come across the following review:
+```{r}
+review2 <- "I really enjy codnig in R and wnt to lrn more."
+```
+Suppose we're looking for the word "enjoy" to determine if a review is good or not. If we were to use this review unaltered, we would mistakenly miss a good review. Before analyzing this review, it is important to replace all of the misspelled words. This is where the str_replace() function comes in like so:
+```{r}
+library(tidyverse)
+review2 <- "I really enjy codnig in R and wnt to lrn more."
+str_replace(review2, pattern = "enjy", replacement = "enjoy")
+# output: [1] "I really enjoy codnig in R and wnt to lrn more."
+```
