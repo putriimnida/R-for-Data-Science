@@ -3939,5 +3939,38 @@ Suppose we're looking for the word "enjoy" to determine if a review is good or n
 library(tidyverse)
 review2 <- "I really enjy codnig in R and wnt to lrn more."
 str_replace(review2, pattern = "enjy", replacement = "enjoy")
-# output: [1] "I really enjoy codnig in R and wnt to lrn more."
+# output: "I really enjoy codnig in R and wnt to lrn more."
 ```
+The str_replace() function takes three inputs: the text we want to search through, the search pattern we want to change (pattern), and lastly, the word or characters we want to use to replace the pattern (replacement). In the code above, we are replacing the misspelled "enjy" with the proper "enjoy".
+
+String replacement can also be used to remove text as well, since deleting text can also be interpreted as replacing text with "nothing". This is extremely useful if we want to remove certain characters like punctuation or numbers. Let's say that we only want to keep the first clause in review2, then we would do the following:
+```{r}
+str_replace(review2, pattern = " and wnt to lrn more", replacement = "")
+# output: "I really enjy codnig in R."
+```
+If the str_replace() function doesn't find a match in the string, then no replacement will happen and the string will be returned to its original form. One limitation of the str_replace() function is that it will only replace the first instance of a pattern. We can see this in the following:
+```{r}
+review3 <- "I want to lrn R, and I definitely wnt to lrn more."
+str_replace(review3, pattern = "lrn", replacement = "learn")
+# output: "I want to learn R, and I definitely wnt to lrn more."
+```
+Notice that the second misspelled lrn has not been fixed. In cases like this, you should use the str_replace_all() function. The syntax and keywords are similar to str_replace(), but the key difference is that str_replace_all() will replace all pattern matches instead of just the first one it sees.
+```{r}
+review3 <- "I want to lrn R, and I definitely wnt to lrn more."
+str_replace_all(review3, pattern = "lrn", replacement = "learn")
+# output: "I want to learn R, and I definitely wnt to learn more."
+```
+PRACTICE
+The recent_grads dataset is loaded in.
+
+We want to shorten each instance of the word "Engineering" in the Major_category column with the abbreviation "Engr.". Modify the recent_grads dataset so that the Major_category column incorporates this change.
+```{r}
+library(tidyverse)
+
+recent_grads <- read_csv("recent_grads.csv", col_types = cols())
+recent_grads <- recent_grads %>%
+  mutate(
+    Major_category = str_replace(Major_category, "Engineering", "Engr.")
+  )
+```
+
