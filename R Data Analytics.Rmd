@@ -3974,3 +3974,35 @@ recent_grads <- recent_grads %>%
   )
 ```
 
+
+The Map Function in R
+1 of 11 · Introduction
+Learn
+In the last course, we emphasized the importance of vectorization in data analysis. Vectorization allows us to quickly create new columns in our data tables(tibbles) from existing columns in our data, a process that can be achieved using the mutate() function. Throughout your programming journey, we have introduced you to functions that help vectorize operations, such as the if_else() function, which enables the vectorization of the if statement on a specified column.
+In this lesson, we'll learn how to vectorize a function. Like a tradition, functions take inputs, perform a calculation on them and then return an output. Currently, we have no way of taking each of the values in a tibble column and putting them through a function to get a column of outputs. Unfortunately, this process is more complicated than passing in a single column into a function and getting back an output column. This operation is extremely common in data analysis, but it requires more explanation and depth compared to what we covered so far. This lesson will combine the concepts of vectorization and custom functions, and there's a lot of ground to cover. 
+
+
+The Map Function in R
+2 of 11 · Introduction To The Data
+Learn
+To really see the power of vectorization, we'll be analyzing a dataset that is ideally suited for this purpose. Our dataset is a collection of test scores of four different students that took five different tests for three subjects: writing, math and science. Over the course of this lesson, we'll perform different analytical tasks that will require us to vectorize different functions.
+
+In this scenario, we'll act as the teacher for these students who is responsible for evaluating these students based on their scores. Our objective is to compute various summaries and metrics for each student. Let's have a quick look at the data:
+```{r}
+head(student_scores, 3)
+
+#   names   assignment_number writing_score math_score science_score math_extra_credit
+# 1 Michael 1                 56%           50%        79%           High
+# 2 Michael 2                 84%           59%        72%           None
+# 3 Michael 3                 64%           84%        78%           Low
+```
+
+In addition to the writing, math and science scores, we also have an extra_credit column that describes how much extra credit each student received for a corresponding math assignment. We'll need to take this column into account when calculating everyone's final averages. Notice too that all the scores are character vectors. We'll need to handle this in the data cleaning as well.
+
+PRACTICE
+The dataset is contained in the scores.csv file. Load it into a variable called student_scores so that we can move forward and analyze it.
+```{r}
+library(tidyverse)
+student_scores <- read_csv("scores.csv")
+```
+
