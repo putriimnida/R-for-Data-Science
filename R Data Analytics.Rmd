@@ -4006,3 +4006,41 @@ library(tidyverse)
 student_scores <- read_csv("scores.csv")
 ```
 
+The Map Function in R
+3 of 11 · Preparing Our Function
+Learn
+The first problem we need to address with the dataset is the presentation of each students' scores as strings. Preferably, we would want them to be numbers, so as to enable us perform calculations with them. This gives us a perfect opportunity to create a function, which we can then apply in a vectorized manner to convert the entire column of strings into numbers. Once we have this function, we can efficiently format all the score columns.
+
+Let's revisit the data preview from the last screen to keep the data format in mind:
+```{r}
+head(student_scores, 3)
+
+#   names   assignment_number writing_score math_score science_score math_extra_credit
+# 1 Michael 1                 56%           50%        79%           High
+# 2 Michael 2                 84%           59%        72%           None
+# 3 Michael 3                 64%           84%        78%           Low
+```
+
+PRACTICE
+We provided a string in the variable percent_string. We would like to convert it into numerical form.
+
+1. Create a function called format_score() that:
+Takes in a single string as an input.
+Removes the % sign from the string.
+Converts the string into a number using the as.numeric() function. This useful function takes in a string and will convert it into a number if it resembles a number.
+Outputs that number (e.g. The string "74%" should be converted to the number 74.)
+2. Pass percent_string into the format_score() function and assign the output to the variable converted_string.
+```{r}
+library(tidyverse)
+percent_string <- "74%"
+format_score <- function(score) {
+    fmt_string <- str_replace(score, "%", "")
+    num <- as.numeric(fmt_string)
+    
+    return(num)
+}
+
+converted_string <- format_score(percent_string)
+
+```
+
