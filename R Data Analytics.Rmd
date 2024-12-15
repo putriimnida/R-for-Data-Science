@@ -4044,3 +4044,68 @@ converted_string <- format_score(percent_string)
 
 ```
 
+4 of 11 · The map Function
+Learn
+Now that we have a function to vectorize, let's learn how to apply it to a column of strings. We will use the format_score() function on each of the column values to obtain another column with individual outputs for them. This process is known as vectorizing a function.
+In the diagram, the inputs represent a series of values that will act as the inputs to our function. We made an example function with add_one() which takes a value, adds one to it and returns this result.
+
+The "outputs" represent the results of applying the add_one() function to the inputs. Our goal on this screen is to learn how to apply a function (e.g., add_one() or format_score()) to a series of values.
+
+To achieve this, we can use the map() function from the purrr package, which is part of the tidyverse. The map() function vectorizes functions, as shown in the diagram above. Before using map(), let's discuss its input and output and how they relate to tibbles.
+
+The map() function takes two inputs: 1) a vector or list and 2) a function to apply on this vector/list. map() will take each element of the input vector or list, apply the function to each element, and will return a list. If we code the diagram above, we get:
+```{r}
+library(tidyverse)
+# Input vector
+inputs <- 1:5
+
+# Function to vectorize
+add_one <- function(value) {
+  return(value + 1)
+}
+
+
+outputs <- map(inputs, add_one)
+
+outputs
+# [[1]]
+# [1] 2
+
+# [[2]]
+# [1] 3
+
+# [[3]]
+# [1] 4
+
+# [[4]]
+# [1] 5
+
+# [[5]]
+# [1] 6
+```
+If you observe the data type of the outputs, we can confirm that it's a list.
+```{r}
+typeof(outputs)
+# output: [1] "list"
+```
+As you might recall, a list can be indexed by either a number or a string using double bracket [[ ]] notation. The first element in the list, indexed as map_result[[1]] contains the output of add_one(1), and so on. It's important to remember exactly what the output of the map() function is. We may accidentally assume that map() returns a vector and use the output as one, but we would get errors. Before we continue our discussion, practice using the map() function.
+
+PRACTICE
+We provided a format_score() function for you to use. You may also use the function you created on the last screen.
+
+Using the given vector input_scores, map the format_score() function on all of the values in this vector. Assign the output to the variable output_scores.
+After creating your output_scores variable, take third element of output_scores and assign it to the variable third_element.
+```{r}
+library(tidyverse)
+input_scores <- c("83%", "29%", "76%")
+
+format_score <- function(score) {
+  fmt_string <- str_replace(score, "%", "")
+  num <- as.numeric(fmt_string)
+  
+  return(num)
+}
+
+# not yet finished
+```
+
