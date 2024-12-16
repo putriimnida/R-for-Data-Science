@@ -4106,6 +4106,11 @@ format_score <- function(score) {
   return(num)
 }
 
-# not yet finished
+output_scores <- map(input_scores, format_score)
+
+third_element <- output_scores[[3]]
+third_element
+
+# output: 76
 ```
 
