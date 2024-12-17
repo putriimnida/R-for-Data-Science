@@ -4114,3 +4114,83 @@ third_element
 # output: 76
 ```
 
+5 of 11 · Creating New Columns With map()
+Learn
+On the last screen, we learned how to use the map() function to vectorize the format_score() function, allowing us to clean up our student_scores dataset. We saw that the map() outputs a list, but it's not entirely clear how this will allow us to actually convert the student_scores into the format we need.
+
+The answer is pretty straightforward for us to implement as programmers. We can actually use the mutate() function to directly create the new columns with the map(). What matters is that map() creates a list that has the same number of elements as the number of rows in the data. This output list will be used as the new column in the data!
+
+What this boils down to is just passing another column in the dataset as the input vector/list into the map(), just as we saw on the last screen. As an example, we'll clean the writing_score column using the format_score() function.
+```{r}
+format_score <- function(score) {
+  fmt_string <- str_replace(score, "%", "")
+  num <- as.numeric(fmt_string)
+
+  return(num)
+}
+
+student_scores <- student_scores %>%
+  mutate(
+    new_writing_score = map(writing_score, format_score)
+  )
+```
+The above code uses the format_score() function to clean the writing_score column, and then creates a new column new_writing_score. We can check the columns in scores to confirm that our new column is a part of the data:
+```{r}
+colnames(student_scores)
+# [1] "names" "assignment_number" "writing_score" "math_score"       
+# [5] "science_score" "math_extra_credit" "new_writing_score"
+```
+If we try to inspect the new_writing_score column, we'll see something you might not expect:
+```{r}
+# Output shortened for readability
+student_scores$new_writing_score[1:3]
+# [[1]]
+# [1] 56
+
+# [[2]]
+# [1] 84
+
+# [[3]]
+# [1] 64
+```
+Remember that the map() function returns a list, so this is what we see in the new column. Ideally, we would only want to see a vector of values instead of a list. While there are more elegant solutions to convert the map() output into a vector, right now we can fix our problem with the unlist() function. As its name suggests, the unlist() function will convert a list into a vector, which is exactly what we need.
+```{r}
+student_scores <- student_scores %>%
+  mutate(
+    new_writing_score = unlist(map(writing_score, format_score))
+  )
+
+student_scores$new_writing_score
+# [1] 56 84 64 69 84 70 61 71 78 71 67 45 39 68 76 69 55 78 57 67
+```
+As we discussed before, the map() takes each value in the writing_score column and passes it into the format_score() function. Thereafter, it takes the result of the map() and assigns it to new_writing_score.
+
+With this in mind, you can now clean the other two score columns in the scores dataset.
+
+
+PRACTICE
+The student_scores dataset is loaded in, and we already cleaned the writing_score column.
+1. Use the format_score() function to create a new column called new_math_score in the student_scores dataset. Use the math_score column as an input.
+Make sure to use the unlist() function to convert the result into a vector.
+2. Similarly, use the format_score() function to create a new column called new_science_score in the student_scores dataset. Use the science_score column as an input.
+```{r}
+library(tidyverse)
+student_scores <- read_csv("scores.csv", col_types = cols())
+format_score <- function(score) {
+  fmt_string <- str_replace(score, "%", "")
+  num <- as.numeric(fmt_string)
+  
+  return(num)
+}
+
+student_scores <- student_scores %>%
+  mutate(
+    new_writing_score = unlist(map(writing_score, format_score))
+  )
+student_scores <- student_scores %>%
+  mutate(
+    new_math_score = unlist(map(math_score, format_score)),
+    new_science_score = unlist(map(science_score, format_score))
+  )
+```
+
