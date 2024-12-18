@@ -4193,4 +4193,71 @@ student_scores <- student_scores %>%
     new_science_score = unlist(map(science_score, format_score))
   )
 ```
+6 of 11 · Two Input Variation of map
+Learn
+On the last screen, we cleaned up the score columns in the dataset by successfully converting them into numerical format. However, there's a limitation to the map() function: it handles only one input. How do we overcome this?
+
+Fortunately, the purrr package contains a whole family of map() functions for different situations. The map() function is designed to work with only one input, and its cousin the map2() function is designed to handle two inputs. 
+
+In this case, there are two inputs (inputs_first and inputs_second). Likewise, the function we want to vectorize, add_two_values() has two inputs. We can use map2() to vectorize add_two_values() on inputs_first and inputs_second. Converting the diagram into code form, we have:
+```{r}
+# Two inputs vectors
+inputs_first <- 1:5
+inputs_second <- 6:10
+
+# Function to vectorize
+add_two_values <- function(x, y) {
+  return(x + y)
+}
+
+outputs <- map2(inputs_first, inputs_second, add_two_values)
+
+outputs
+# [[1]]
+# [1] 7
+
+# [[2]]
+# [1] 9
+
+# [[3]]
+# [1] 11
+
+# [[4]]
+# [1] 13
+
+# [[5]]
+# [1] 15
+```
+Now, in the student_scores dataset, we have another column called math_extra_credit. This column is a string data type column, and it represents the amount of extra credit a student earned on a particular math test. Depending on how much extra credit is earned ("None," "Low," or "High"), the student can increase their math score. We need to account for this when we calculate the math score. On this screen, we'll first develop the function we want to vectorize.
+
+PRACTICE
+1. Create a new function called add_extra_credit(). It should take two inputs: the first one should be a number (representing a score) and the second one should be a string (representing an amount of extra credit)
+
+If the string is "None": Don't add any extra points to the number input.
+If the string is "Low": Add 1 extra point to the number input
+If the string is "High": Add 5 extra points to the number input
+
+2. Using the given input_score variable, make sure that it works correctly with different inputs for the string.
+
+With a string of "None": Assign this output to no_extra_credit_score.
+With a string of "Low": Assign this output to low_extra_credit_score.
+With a string of "High": Assign this output to high_extra_credit_score.
+```{r}
+input_score <- 50
+add_extra_credit <- function(score, extra_credit) {
+  if (extra_credit == "None") {
+      points_to_add <- 0
+  } else if (extra_credit == "Low") {
+      points_to_add <- 1
+  } else {
+      points_to_add <- 5
+  }
+    
+  return(score + points_to_add)
+}
+
+no_extra_credit_score <- add_extra_credit(input_score, "None")
+low_extra_credit_score <- add_extra_credit(input_score, "Low")
+high_extra_credit_score <- add_extra_credit(input_score, "High")
+```
 
