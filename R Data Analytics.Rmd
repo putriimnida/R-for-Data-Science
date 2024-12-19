@@ -4261,3 +4261,70 @@ low_extra_credit_score <- add_extra_credit(input_score, "Low")
 high_extra_credit_score <- add_extra_credit(input_score, "High")
 ```
 
+7 of 11 · Two Input Variation of map(contd.)
+Learn
+On the last screen, we learned about the map2() function, a relative of the map() function that uses two inputs instead of one. Our target is to adjust a student's math score based on how much extra credit they've earned, and we've developed a function to do this job.
+
+Like with map(), we can use map2() to create new columns in a tibble. The syntax is similar, except that we need to input two columns instead of just one. The code below offers an idea of how to use the map2() function to create a new column in a dataset.
+```{r}
+example_tibble <- tibble(
+  x = 1:5,
+  y = 6:10
+)
+
+add_two_values <- function(x, y) {
+  return(x + y)
+}
+
+example_tibble <- example_tible %>%
+  mutate(
+    sum_column = unlist(map2(x, y, add_two_values))
+  )
+```
+
+This code is similar to our earlier map2() example, except that we are using tibble columns instead of vectors now. Like map(), map2() also creates a list, so we need to use the unlist() function to make sure that the new column is a vector. Note that you must be careful about the order that you put the columns inside map2(). The first column will be used as the first input in the function, and the second column will be used for the second input. Getting the order wrong will lead to unexpected errors.
+
+Using the above code in mind, apply what you know about map2() to finally adjust the math score to account for extra credit.
+
+PRACTICE
+We provided the student_scores dataset and all of the functions we used to convert the data into a more convenient format. We also provided an add_extra_credit() function to use on the dataset, but feel free to use the one that you've created.
+
+Create a new column in the student_scores dataset called adjusted_math_score. This column should represent the math score that a student received on a test, accounting for the extra credit they got on the test.
+The new_math_score column contains the math score in number format.
+The math_extra_credit column contains the strings describing how much extra credit was earned.
+Make sure to use the unlist() function to convert the result from map2() into a vector.
+```{r}
+library(tidyverse)
+student_scores <- read_csv("scores.csv", col_types = cols())
+
+format_score <- function(score) {
+  fmt_string <- str_replace(score, "%", "")
+  num <- as.numeric(fmt_string)
+  
+  return(num)
+}
+
+student_scores <- student_scores %>%
+  mutate(
+    new_writing_score = unlist (map(writing_score, format_score)),
+    new_math_score = unlist (map(math_score, format_score)),
+    new_science_score = unlist(map(science_score, format_score))
+  )
+
+add_extra_credit <- function(score, extra_credit) {
+  if (extra_credit == "None") {
+    points_to_add <- 0
+  } else if (extra_credit == "Low") {
+    points_to_add <- 1
+  } else {
+    points_to_add <- 5
+  }
+  
+  return(score + points_to_add)
+}
+
+student_scores <- student_scores %>%
+  mutate(
+    adjusted_math_score = unlist(map2(new_math_score, math_extra_credit, add_extra_credit))
+  )
+```
