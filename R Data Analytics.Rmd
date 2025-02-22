@@ -3600,6 +3600,53 @@ Like control flow, functions are an essential programming skill to learn. As you
 In the next lesson, we'll dive into string handling in R with more sophisticated techniques. This will include manipulation, formatting, and analysis of string data. String handling is an essential skill, especially in data processing and analysis, where text data is a common occurrence.
 
 
+Guided Project: Creating An Efficient Data Analysis Workflow
+2 of 9 · Getting Familiar With The Data
+Learn
+It's easy to lose context when we're just talking about data analysis in general. The first thing, amongst many other things we should do before carrying out any analysis is to get acquainted with our dataset. We can achieve this by answering the following questions: How much data is there? What kind of data do we actually have on hand? Is there anything "weird" that might interfere with any analyses we might need to do? Is there missing data? Answering these questions using the concepts we have learned would save us time and effort later.
+
+But, if we don't check the data beforehand, it's easy to make some false assumptions about the data that can hinder our progress later. Maybe we think that one column looks like a number type of column, whereas it's actually been read in as a string type. Perhaps some records within the dataset were misspelled due to entry errors. There may also be inconsistencies with data formats within a column.
+
+Since this lesson is a guided project, we are trying to encourage students to use and apply each of the concepts they've learned in this and previous courses. For convenience, we'll lay out some example code that may prove helpful as you are going through the exercises.
+
+Some of the questions can be answered with a for loop. Recall that a for loop looks like the following:
+```{r}
+input_vector <- c("first", "second", "third")
+
+for (input in input_vector) {
+  print(input)
+}
+
+# output:
+# [1] "first"
+# [1] "second"
+# [1] "third"
+```
+
+other questions might incorporate control flow with an if statement. An if statement can be written like the following:
+```{r}
+condition_met <- TRUE
+
+if (condition_met) {
+  print("This branch runs because the conditional operator was true")
+} else {
+  print("This branch runs because the conditional operator was false")
+}
+
+# output: [1] "This branch runs because the conditional operator was true"
+```
+
+For the most part, you will be using the if_else() function and case_when() function since you'll be dealing with data in tibbles, but it's still good to know the general control flow structure.
+
+One of the instructions also asks about unique values in a column. If we have a vector that has duplicate values in it, we can see all of the unique values in it with the unique() function. We show an example use below:
+
+```{r}
+vector_with_duplicates <- c(1, 1, 1, 2, 2, 3, 3, 3, 3)
+
+unique(vector_with_duplicates)
+# output: [1] 1 2 3
+```
+
 
 
 
